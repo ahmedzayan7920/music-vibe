@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:music_vibe/views/widgets/mini_player.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import '../widgets/dark_light_switch.dart';
 import 'player_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,6 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         centerTitle: true,
         title: const Text("Music Vibe"),
+        leadingWidth: 72,
+        leading: const DarkLightSwitch(),
       ),
       body: FutureBuilder<List<SongModel>>(
         future: OnAudioQuery().querySongs(),

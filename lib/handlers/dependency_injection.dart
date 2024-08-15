@@ -11,6 +11,4 @@ initDependencyInjection() async {
   getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
   getIt.registerSingleton<MyAudioHandler>(await initAudioService());
   getIt.registerLazySingleton<OnAudioQuery>(() => OnAudioQuery());
-
-
 }

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_vibe/logic/app_cubit/app_cubit.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'handlers/dependency_injection.dart';
 import 'handlers/song_handler.dart';
+import 'logic/app_cubit/app_state.dart';
 import 'theming/app_themes.dart';
 import 'views/screens/home_screen.dart';
 import 'views/screens/permissions_screen.dart';
@@ -22,12 +26,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: AppThemes.lightTheme,
-      darkTheme: AppThemes.darkTheme,
-      themeMode: ThemeMode.light,
-      home: _hasPermission ? const HomeScreen() : const PermissionsScreen(),
+    return BlocProvider(
+      create: (context) =>
+          AppCubit(sharedPreferences: getIt<SharedPreferences>()),
+      child: BlocBuilder<AppCubit, AppState>(
+        buildWhen: (previous, current) => previous != current,
+        builder: (context, state) {
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme: AppThemes.lightTheme,
+            darkTheme: AppThemes.darkTheme,
+            themeMode: context.read<AppCubit>().isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            home:
+                _hasPermission ? const HomeScreen() : const PermissionsScreen(),
+          );
+        },
+      ),
     );
   }
 }
