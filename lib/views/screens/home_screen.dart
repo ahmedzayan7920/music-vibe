@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_vibe/views/widgets/home_screen/home_albums.dart';
+import 'package:music_vibe/views/widgets/home_screen/home_artists.dart';
+import 'package:music_vibe/views/widgets/home_screen/home_favorites.dart';
+import 'package:music_vibe/views/widgets/home_screen/home_playlists.dart';
 import 'package:music_vibe/views/widgets/mini_player.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 
+import '../../logic/bottom_navigation_cubit/bottom_navigation_cubit.dart';
+import '../../logic/bottom_navigation_cubit/bottom_navigation_state.dart';
 import '../widgets/dark_light_switch.dart';
-import 'player_screen.dart';
+import '../widgets/home_screen/home_bottom_navigation_bar.dart';
+import '../widgets/home_screen/home_songs.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,68 +22,40 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: const Text("Music Vibe"),
-        leadingWidth: 72,
-        leading: const DarkLightSwitch(),
-      ),
-      body: FutureBuilder<List<SongModel>>(
-        future: OnAudioQuery().querySongs(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              snapshot.hasData == false) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.data?.isEmpty ?? false) {
-            return const Center(child: Text("No songs found"));
-          } else {
-            List<SongModel> allSongs = snapshot.data ?? [];
-            return ListView.builder(
-              itemCount: allSongs.length,
-              itemBuilder: (context, index) {
-                SongModel song = allSongs[index];
-                return ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PlayerScreen(
-                          songs: allSongs,
-                          index: index,
-                        ),
-                      ),
-                    );
-                  },
-                  title: Text(
-                    song.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  subtitle: Text(
-                    song.artist ?? "unknown",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  leading: SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: Center(
-                      child: QueryArtworkWidget(
-                        id: song.id,
-                        type: ArtworkType.AUDIO,
-                        nullArtworkWidget: const Icon(Icons.music_note),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            );
-          }
+    return BlocProvider(
+      create: (context) => BottomNavigationCubit(),
+      child: BlocBuilder<BottomNavigationCubit, BottomNavigationState>(
+        buildWhen: (previous, current) =>
+            current is BottomNavigationIndexChangedState,
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              centerTitle: true,
+              title: const Text("Music Vibe"),
+              leadingWidth: 72,
+              leading: const DarkLightSwitch(),
+            ),
+            body: [
+              const HomeSongs(),
+              const HomePlaylists(),
+              const HomeAlbums(),
+              const HomeArtists(),
+              const HomeFavorites(),
+            ][context
+                .read<BottomNavigationCubit>()
+                .currentBottomNavigationIndex],
+            bottomNavigationBar: const Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                MiniPlayer(),
+                HomeBottomNavigationBar(),
+              ],
+            ),
+          );
         },
       ),
-      bottomNavigationBar: const MiniPlayer(),
     );
   }
 }
