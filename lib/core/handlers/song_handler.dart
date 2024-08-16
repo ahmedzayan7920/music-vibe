@@ -13,14 +13,13 @@ Future<MyAudioHandler> initAudioService() async {
   return await AudioService.init<MyAudioHandler>(
       builder: () => MyAudioHandler(),
       config:  AudioServiceConfig(
-        androidNotificationChannelId: 'com.example.music_vibe.channel.audio',
+        androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
         androidNotificationChannelName: 'Audio playback',
         androidShowNotificationBadge: true,
         androidStopForegroundOnPause: true,
         androidNotificationOngoing: true,
         androidResumeOnClick: true,
         notificationColor: Colors.grey[900],
-        androidNotificationIcon: "drawable/ic_stat_music_note",
       ));
 }
 
