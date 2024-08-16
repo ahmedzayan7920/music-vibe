@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:music_vibe/handlers/dependency_injection.dart';
+import 'package:music_vibe/core/di/dependency_injection.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../../handlers/song_handler.dart';
+import '../../core/handlers/song_handler.dart';
 import '../widgets/player_screen/player_songs_list.dart';
 import '../widgets/player_screen/action_buttons.dart';
 import '../widgets/player_screen/time_section.dart';

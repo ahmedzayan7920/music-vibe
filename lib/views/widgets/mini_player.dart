@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../../handlers/dependency_injection.dart';
-import '../../handlers/song_handler.dart';
+import '../../core/di/dependency_injection.dart';
+import '../../core/handlers/song_handler.dart';
 import '../screens/player_screen.dart';
 import 'player_screen/play_pause_button.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../handlers/dependency_injection.dart';
-import '../../../handlers/song_handler.dart';
+import '../../../core/di/dependency_injection.dart';
+import '../../../core/handlers/song_handler.dart';
 
 class TimeSection extends StatelessWidget {
   const TimeSection({

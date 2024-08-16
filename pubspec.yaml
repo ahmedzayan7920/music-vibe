@@ -31,6 +31,7 @@ dependencies:
   android_intent_plus: ^5.1.0
   audio_service: ^0.18.15
   cupertino_icons: ^1.0.8
+  dartz: ^0.10.1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6

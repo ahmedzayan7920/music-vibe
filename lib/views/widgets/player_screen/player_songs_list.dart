@@ -3,8 +3,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import '../../../handlers/dependency_injection.dart';
-import '../../../handlers/song_handler.dart';
+import '../../../core/di/dependency_injection.dart';
+import '../../../core/handlers/song_handler.dart';
 
 class PlayerSongsList extends StatefulWidget {
   const PlayerSongsList({super.key});

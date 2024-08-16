@@ -4,10 +4,11 @@ import 'package:music_vibe/logic/app_cubit/app_cubit.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'handlers/dependency_injection.dart';
-import 'handlers/song_handler.dart';
+import 'core/di/dependency_injection.dart';
+import 'core/handlers/app_bloc_observer.dart';
+import 'core/handlers/song_handler.dart';
 import 'logic/app_cubit/app_state.dart';
-import 'theming/app_themes.dart';
+import 'core/theming/app_themes.dart';
 import 'views/screens/home_screen.dart';
 import 'views/screens/permissions_screen.dart';
 
@@ -18,6 +19,7 @@ void main() async {
   await initDependencyInjection();
   await getIt<MyAudioHandler>().restoreAudioState();
   _hasPermission = await getIt<OnAudioQuery>().permissionsStatus();
+  Bloc.observer = const AppBlocObserver();
   runApp(const MyApp());
 }
 
