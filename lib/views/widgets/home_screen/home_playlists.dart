@@ -5,6 +5,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../logic/cubit/playlists_cubit.dart';
 import '../../../logic/cubit/playlists_state.dart';
+import '../../screens/playlist_songs_screen.dart';
 import '../common/playlist_list_tile.dart';
 
 class HomePlaylists extends StatelessWidget {
@@ -14,10 +15,13 @@ class HomePlaylists extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<PlaylistsCubit>()..queryAllPlaylists(),
+    return BlocProvider.value(
+      value: getIt<PlaylistsCubit>()..queryAllPlaylists(),
       child: BlocBuilder<PlaylistsCubit, PlaylistsState>(
-        buildWhen: (previous, current) => previous != current,
+        buildWhen: (previous, current) =>
+            current is PlaylistsLoadingState ||
+            current is PlaylistsFailureState ||
+            current is PlaylistsSuccessState,
         builder: (context, state) {
           if (state is PlaylistsSuccessState) {
             List<PlaylistModel> allPlaylists = state.allPlaylists;
@@ -28,7 +32,20 @@ class HomePlaylists extends StatelessWidget {
               child: ListView.builder(
                 itemCount: allPlaylists.length,
                 itemBuilder: (context, index) {
-                  return PlaylistListTile(playlist: allPlaylists[index]);
+                  return PlaylistListTile(
+                    playlist: allPlaylists[index],
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PlaylistSongsScreen(
+                            playlistId: allPlaylists[index].id,
+                            playlistName: allPlaylists[index].playlist,
+                          ),
+                        ),
+                      );
+                    },
+                  );
                 },
               ),
             );

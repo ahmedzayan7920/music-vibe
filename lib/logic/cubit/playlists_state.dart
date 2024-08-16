@@ -17,3 +17,14 @@ final class PlaylistsSuccessState extends PlaylistsState {
 
   PlaylistsSuccessState({required this.allPlaylists});
 }
+final class PlaylistSongsLoadingState extends PlaylistsState {}
+final class PlaylistSongsFailureState extends PlaylistsState {
+  final String message;
+
+  PlaylistSongsFailureState({required this.message});
+}
+final class PlaylistSongsSuccessState extends PlaylistsState {
+  final List<SongModel> allSongs;
+
+  PlaylistSongsSuccessState({required this.allSongs});
+}

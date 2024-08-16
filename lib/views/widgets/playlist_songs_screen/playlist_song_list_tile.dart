@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:music_vibe/views/widgets/common/song_list_tile_trailing.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../screens/player_screen.dart';
-import 'list_tile_leading.dart';
+import '../common/list_tile_leading.dart';
+import 'playlist_song_list_tile_trailing.dart';
 
-class SongListTile extends StatelessWidget {
-  const SongListTile({
+class PlaylistSongListTile extends StatelessWidget {
+  const PlaylistSongListTile({
     super.key,
     required this.allSongs,
     required this.song,
+    required this.playlistId,
   });
 
   final List<SongModel> allSongs;
   final SongModel song;
+  final int playlistId;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class SongListTile extends StatelessWidget {
         type: ArtworkType.AUDIO,
         placeholderIcon: Icons.music_note_outlined,
       ),
-      trailing: SongListTileTrailing(songId: song.id),
+      trailing: PlaylistSongListTileTrailing(playlistId: playlistId, songId: song.id),
     );
   }
 }

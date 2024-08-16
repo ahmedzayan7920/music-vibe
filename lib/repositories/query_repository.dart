@@ -11,9 +11,11 @@ class QueryRepository {
 
   List<SongModel> _allSongs = [];
   List<PlaylistModel> _allPlaylists = [];
+  final Map<int, List<SongModel>> _allPlaylistsSongs = {};
 
   List<SongModel> get allSongs => _allSongs;
   List<PlaylistModel> get allPlaylists => _allPlaylists;
+  Map<int, List<SongModel>> get allPlaylistsSongs => _allPlaylistsSongs;
 
   Future<Either<Failure, List<SongModel>>> queryAllSongs() async {
     try {
@@ -26,9 +28,39 @@ class QueryRepository {
 
   Future<Either<Failure, List<PlaylistModel>>> queryAllPlaylists() async {
     try {
-      _allPlaylists =
-          await _audioQuery.queryPlaylists();
+      _allPlaylists = await _audioQuery.queryPlaylists();
       return right(_allPlaylists);
+    } catch (error) {
+      return left(Failure(message: error.toString()));
+    }
+  }
+
+  Future<Either<Failure, List<SongModel>>> queryPlaylistSongs({
+    required int id,
+  }) async {
+    try {
+      final playlistSongs = await _audioQuery.queryAudiosFrom(
+        AudiosFromType.PLAYLIST,
+        id,
+        sortType: null,
+        orderType: OrderType.ASC_OR_SMALLER,
+        ignoreCase: true,
+      );
+
+      List<SongModel> matchedSongs = [];
+      _allPlaylistsSongs.remove(id);
+      for (var playlistSong in playlistSongs) {
+        for (var song in allSongs) {
+          if (playlistSong.title == song.title &&
+              playlistSong.duration == song.duration) {
+            matchedSongs.add(song);
+            break;
+          }
+        }
+      }
+
+      _allPlaylistsSongs[id] = matchedSongs;
+      return right(matchedSongs);
     } catch (error) {
       return left(Failure(message: error.toString()));
     }

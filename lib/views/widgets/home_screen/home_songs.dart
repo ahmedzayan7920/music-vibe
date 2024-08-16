@@ -14,9 +14,10 @@ class HomeSongs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<SongsCubit>()..queryAllSongs(),
+    return BlocProvider.value(
+      value: getIt<SongsCubit>()..queryAllSongs(),
       child: BlocBuilder<SongsCubit, SongsState>(
+        buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
           if (state is SongsSuccessState) {
             List<SongModel> allSongs = state.allSongs;

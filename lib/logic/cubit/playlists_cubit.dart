@@ -29,6 +29,19 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
     _queryPlaylists();
   }
 
+  queryPlaylistSongs({required int id}) async {
+    emit(PlaylistSongsLoadingState());
+    final result = await _queryRepository.queryPlaylistSongs(id: id);
+    result.fold(
+      (failure) {
+        emit(PlaylistSongsFailureState(message: failure.message));
+      },
+      (songs) {
+        emit(PlaylistSongsSuccessState(allSongs: songs));
+      },
+    );
+  }
+
   addPlayList({required String name}) async {
     emit(PlaylistsLoadingState());
     final success = await _onAudioQuery.createPlaylist(name);
@@ -46,6 +59,22 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
       await _queryPlaylists();
     } else {
       emit(PlaylistsSuccessState(allPlaylists: _queryRepository.allPlaylists));
+    }
+  }
+
+  addSongToPlayList({required int playlistId, required int songId}) async {
+    final success = await _onAudioQuery.addToPlaylist(playlistId, songId);
+    if (success) {
+      queryPlaylistSongs(id: playlistId);
+      _queryPlaylists();
+    }
+  }
+
+  removeSongFromPlayList({required int playlistId, required int songId}) async {
+    final success = await _onAudioQuery.removeFromPlaylist(playlistId, songId);
+    if (success) {
+      queryPlaylistSongs(id: playlistId);
+      _queryPlaylists();
     }
   }
 

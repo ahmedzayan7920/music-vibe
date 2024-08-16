@@ -18,12 +18,12 @@ initDependencyInjection() async {
       () => QueryRepository(audioQuery: getIt<OnAudioQuery>())
         ..queryAllSongs()
         ..queryAllPlaylists());
-  getIt.registerFactory<SongsCubit>(
+  getIt.registerLazySingleton<SongsCubit>(
     () => SongsCubit(
       queryRepository: getIt<QueryRepository>(),
     ),
   );
-  getIt.registerFactory<PlaylistsCubit>(
+  getIt.registerLazySingleton<PlaylistsCubit>(
     () => PlaylistsCubit(
       queryRepository: getIt<QueryRepository>(),
       onAudioQuery: getIt<OnAudioQuery>(),

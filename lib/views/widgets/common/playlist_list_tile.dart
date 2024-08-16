@@ -6,23 +6,14 @@ import '../../../core/di/dependency_injection.dart';
 import '../../../logic/cubit/playlists_cubit.dart';
 
 class PlaylistListTile extends StatelessWidget {
-  const PlaylistListTile({super.key, required this.playlist});
+  const PlaylistListTile({super.key, required this.playlist, required this.onTap});
   final PlaylistModel playlist;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => PlaylistSongsScreen(
-        //       playlistId: playlist.id,
-        //       playlistName: playlist.playlist,
-        //     ),
-        //   ),
-        // );
-      },
+      onTap: onTap,
       title: Text(
         playlist.playlist.toString(),
         maxLines: 1,
