@@ -10,6 +10,7 @@ import '../../logic/bottom_navigation_cubit/bottom_navigation_cubit.dart';
 import '../../logic/bottom_navigation_cubit/bottom_navigation_state.dart';
 import '../widgets/dark_light_switch.dart';
 import '../widgets/home_screen/home_bottom_navigation_bar.dart';
+import '../widgets/home_screen/home_floating_action_button.dart';
 import '../widgets/home_screen/home_songs.dart';
 import '../widgets/home_screen/search_button.dart';
 
@@ -55,6 +56,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 HomeBottomNavigationBar(),
               ],
             ),
+            floatingActionButton: context
+                        .read<BottomNavigationCubit>()
+                        .currentBottomNavigationIndex ==
+                    1
+                ? const HomeFloatingActionButton()
+                : null,
           );
         },
       ),

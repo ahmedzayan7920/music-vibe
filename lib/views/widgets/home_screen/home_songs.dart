@@ -5,7 +5,6 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../core/di/dependency_injection.dart';
 import '../../../logic/songs_cubit/songs_state.dart';
-import '../../../repositories/query_repository.dart';
 import '../common/song_list_tile.dart';
 
 class HomeSongs extends StatelessWidget {
@@ -16,12 +15,11 @@ class HomeSongs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SongsCubit(queryRepository: getIt<QueryRepository>())
-        ..queryAllSongs(),
+      create: (context) => getIt<SongsCubit>()..queryAllSongs(),
       child: BlocBuilder<SongsCubit, SongsState>(
         builder: (context, state) {
           if (state is SongsSuccessState) {
-            List<SongModel> allSongs = state.songs;
+            List<SongModel> allSongs = state.allSongs;
             return RefreshIndicator(
               onRefresh: () async {
                 context.read<SongsCubit>().refreshQueryAllSongs();

@@ -1,9 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../screens/player_screen.dart';
+import 'list_tile_leading.dart';
 
 class SongListTile extends StatelessWidget {
   const SongListTile({
@@ -39,17 +38,12 @@ class SongListTile extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      leading: SizedBox(
-        height: 50,
-        width: 50,
-        child: Center(
-          child: QueryArtworkWidget(
-            id: song.id,
-            type: ArtworkType.AUDIO,
-            nullArtworkWidget: const Icon(Icons.music_note),
-          ),
-        ),
+      leading: ListTileLeading(
+        id: song.id,
+        type: ArtworkType.AUDIO,
+        placeholderIcon: Icons.music_note_outlined,
       ),
     );
   }
 }
+

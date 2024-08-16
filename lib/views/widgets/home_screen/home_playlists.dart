@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_vibe/core/di/dependency_injection.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../../logic/cubit/playlists_cubit.dart';
+import '../../../logic/cubit/playlists_state.dart';
+import '../common/playlist_list_tile.dart';
 
 class HomePlaylists extends StatelessWidget {
   const HomePlaylists({
@@ -7,8 +14,31 @@ class HomePlaylists extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Home Playlists"),
+    return BlocProvider(
+      create: (context) => getIt<PlaylistsCubit>()..queryAllPlaylists(),
+      child: BlocBuilder<PlaylistsCubit, PlaylistsState>(
+        buildWhen: (previous, current) => previous != current,
+        builder: (context, state) {
+          if (state is PlaylistsSuccessState) {
+            List<PlaylistModel> allPlaylists = state.allPlaylists;
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<PlaylistsCubit>().refreshQueryAllPlaylists();
+              },
+              child: ListView.builder(
+                itemCount: allPlaylists.length,
+                itemBuilder: (context, index) {
+                  return PlaylistListTile(playlist: allPlaylists[index]);
+                },
+              ),
+            );
+          } else if (state is PlaylistsFailureState) {
+            return Center(child: Text(state.message));
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
   }
 }

@@ -11,14 +11,11 @@ class SongsCubit extends Cubit<SongsState> {
         super(SongsInitialState());
 
   queryAllSongs() async {
-    print("queryAllSongs Started");
     emit(SongsLoadingState());
     if (_queryRepository.allSongs.isEmpty) {
       _querySongs();
     } else {
-      emit(SongsSuccessState(songs: _queryRepository.allSongs));
-      print(
-          "queryAllSongs Ended with ${_queryRepository.allSongs.length} songs");
+      emit(SongsSuccessState(allSongs: _queryRepository.allSongs));
     }
   }
 
@@ -31,13 +28,10 @@ class SongsCubit extends Cubit<SongsState> {
     final result = await _queryRepository.queryAllSongs();
     result.fold(
       (failure) {
-        print("queryAllSongs Error: $failure");
         emit(SongsFailureState(message: failure.message));
       },
       (songs) {
-        print(
-            "queryAllSongs Ended with ${_queryRepository.allSongs.length} songs");
-        emit(SongsSuccessState(songs: songs));
+        emit(SongsSuccessState(allSongs: songs));
       },
     );
   }

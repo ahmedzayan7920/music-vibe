@@ -5,14 +5,17 @@ import 'package:on_audio_query/on_audio_query.dart';
 sealed class SongsState {}
 
 final class SongsInitialState extends SongsState {}
+
 final class SongsLoadingState extends SongsState {}
+
 final class SongsFailureState extends SongsState {
   final String message;
 
   SongsFailureState({required this.message});
 }
-final class SongsSuccessState extends SongsState {
-  final List<SongModel> songs;
 
-  SongsSuccessState({required this.songs});
+final class SongsSuccessState extends SongsState {
+  final List<SongModel> allSongs;
+
+  SongsSuccessState({required this.allSongs});
 }

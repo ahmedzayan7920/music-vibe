@@ -48,12 +48,6 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
     });
   }
 
-  @override
-  Future<void> onTaskRemoved() {
-    // TODO: implement onTaskRemoved
-    return super.onTaskRemoved();
-  }
-
   Future<void> restoreAudioState() async {
     int currentPosition =
         getIt<SharedPreferences>().getInt('audio_position') ?? 0;

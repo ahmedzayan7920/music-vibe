@@ -4,7 +4,6 @@ import 'package:music_vibe/logic/bottom_navigation_cubit/bottom_navigation_cubit
 
 import '../../../logic/bottom_navigation_cubit/bottom_navigation_state.dart';
 
-
 class HomeBottomNavigationBar extends StatelessWidget {
   const HomeBottomNavigationBar({
     super.key,
@@ -13,7 +12,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavigationCubit, BottomNavigationState>(
-      buildWhen: (previous, current) => current is BottomNavigationIndexChangedState,
+      buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         return BottomNavigationBar(
           items: const [
@@ -40,9 +39,13 @@ class HomeBottomNavigationBar extends StatelessWidget {
           ],
           type: BottomNavigationBarType.fixed,
           unselectedItemColor: Colors.grey,
-          currentIndex: context.read<BottomNavigationCubit>().currentBottomNavigationIndex,
+          currentIndex: context
+              .read<BottomNavigationCubit>()
+              .currentBottomNavigationIndex,
           onTap: (value) {
-            context.read<BottomNavigationCubit>().setCurrentBottomNavigationIndex(value);
+            context
+                .read<BottomNavigationCubit>()
+                .setCurrentBottomNavigationIndex(value);
           },
         );
       },
