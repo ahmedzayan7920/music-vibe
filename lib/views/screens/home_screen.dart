@@ -11,6 +11,7 @@ import '../../logic/bottom_navigation_cubit/bottom_navigation_state.dart';
 import '../widgets/dark_light_switch.dart';
 import '../widgets/home_screen/home_bottom_navigation_bar.dart';
 import '../widgets/home_screen/home_songs.dart';
+import '../widgets/home_screen/search_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text("Music Vibe"),
               leadingWidth: 72,
               leading: const DarkLightSwitch(),
+              actions: const [SearchButton()],
             ),
             body: [
               const HomeSongs(),
