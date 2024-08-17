@@ -4,6 +4,7 @@ import 'package:music_vibe/logic/playlists_cubit/playlists_cubit.dart';
 
 import '../../core/di/dependency_injection.dart';
 import '../../logic/playlists_cubit/playlists_state.dart';
+import '../widgets/common/shuffle_list_tile.dart';
 import '../widgets/mini_player.dart';
 import '../widgets/playlist_songs_screen/playlist_song_list_tile.dart';
 import '../widgets/playlist_songs_screen/playlist_songs_floating_action_button.dart';
@@ -33,15 +34,32 @@ class PlaylistSongsScreen extends StatelessWidget {
           builder: (context, state) {
             if (state is PlaylistSongsSuccessState) {
               final allSongs = state.allSongs;
-              return ListView.builder(
-                itemCount: allSongs.length,
-                itemBuilder: (context, index) {
-                  return PlaylistSongListTile(
-                    allSongs: allSongs,
-                    song: allSongs[index],
-                    playlistId: playlistId,
-                  );
-                },
+              if (allSongs.isEmpty) {
+                return Center(
+                  child: Text(
+                    "No Songs Found",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                );
+              }
+              return Column(
+                children: [
+                  allSongs.isEmpty
+                      ? const SizedBox()
+                      : ShuffleListTile(songs: allSongs),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: allSongs.length,
+                      itemBuilder: (context, index) {
+                        return PlaylistSongListTile(
+                          allSongs: allSongs,
+                          song: allSongs[index],
+                          playlistId: playlistId,
+                        );
+                      },
+                    ),
+                  ),
+                ],
               );
             } else if (state is PlaylistSongsFailureState) {
               return Center(

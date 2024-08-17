@@ -21,6 +21,14 @@ class HomeArtists extends StatelessWidget {
         builder: (context, state) {
           if (state is ArtistsSuccessState) {
             List<ArtistModel> allArtists = state.allArtists;
+            if (allArtists.isEmpty) {
+              return Center(
+                child: Text(
+                  "No Artists Found",
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              );
+            }
             return RefreshIndicator(
               onRefresh: () async {
                 context.read<ArtistsCubit>().refreshQueryAllArtists();

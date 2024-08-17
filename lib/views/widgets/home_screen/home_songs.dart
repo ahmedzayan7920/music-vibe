@@ -5,6 +5,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../core/di/dependency_injection.dart';
 import '../../../logic/songs_cubit/songs_state.dart';
+import '../common/shuffle_list_tile.dart';
 import '../common/song_list_tile.dart';
 
 class HomeSongs extends StatelessWidget {
@@ -21,17 +22,34 @@ class HomeSongs extends StatelessWidget {
         builder: (context, state) {
           if (state is SongsSuccessState) {
             List<SongModel> allSongs = state.allSongs;
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<SongsCubit>().refreshQueryAllSongs();
-              },
-              child: ListView.builder(
-                itemCount: allSongs.length,
-                itemBuilder: (context, index) {
-                  SongModel song = allSongs[index];
-                  return SongListTile(allSongs: allSongs, song: song);
-                },
-              ),
+            if (allSongs.isEmpty) {
+              return Center(
+                child: Text(
+                  "No Songs Found",
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              );
+            }
+            return Column(
+              children: [
+                allSongs.isEmpty
+                    ? const SizedBox()
+                    : ShuffleListTile(songs: allSongs),
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      context.read<SongsCubit>().refreshQueryAllSongs();
+                    },
+                    child: ListView.builder(
+                      itemCount: allSongs.length,
+                      itemBuilder: (context, index) {
+                        SongModel song = allSongs[index];
+                        return SongListTile(allSongs: allSongs, song: song);
+                      },
+                    ),
+                  ),
+                ),
+              ],
             );
           } else if (state is SongsFailureState) {
             return Center(

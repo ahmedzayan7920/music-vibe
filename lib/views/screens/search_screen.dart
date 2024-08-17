@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_vibe/repositories/query_repository.dart';
+import 'package:music_vibe/views/widgets/common/shuffle_list_tile.dart';
 import 'package:music_vibe/views/widgets/common/song_list_tile.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -26,15 +27,29 @@ class _SearchScreenState extends State<SearchScreen> {
       body: Column(
         children: [
           SearchFormField(onChanged: getSearchSongs),
-          const SizedBox(height: 16),
-          Expanded(
-            child: ListView.builder(
-              itemCount: allSongs.length,
-              itemBuilder: (context, index) {
-                return SongListTile(allSongs: allSongs, song: allSongs[index]);
-              },
-            ),
-          ),
+          allSongs.isEmpty
+              ? Center(
+                  child: Text(
+                    "No Songs Found",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                )
+              : Expanded(
+                  child: Column(
+                    children: [
+                      ShuffleListTile(songs: allSongs),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: allSongs.length,
+                          itemBuilder: (context, index) {
+                            return SongListTile(
+                                allSongs: allSongs, song: allSongs[index]);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
         ],
       ),
       bottomNavigationBar: const MiniPlayer(),

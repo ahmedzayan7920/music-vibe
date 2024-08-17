@@ -3,6 +3,7 @@ import 'package:music_vibe/core/di/dependency_injection.dart';
 import 'package:music_vibe/repositories/query_repository.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import '../widgets/common/shuffle_list_tile.dart';
 import '../widgets/common/song_list_tile.dart';
 
 class SongsScreen extends StatefulWidget {
@@ -38,12 +39,28 @@ class _SongsScreenState extends State<SongsScreen> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ListView.builder(
-        itemCount: songs.length,
-        itemBuilder: (context, index) {
-          return SongListTile(allSongs: songs, song: songs[index]);
-        },
-      ),
+      body: (songs.isEmpty)
+          ? Center(
+              child: Text(
+                "No Songs Found",
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            )
+          : Column(
+              children: [
+                songs.isEmpty
+                    ? const SizedBox()
+                    : ShuffleListTile(songs: songs),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: songs.length,
+                    itemBuilder: (context, index) {
+                      return SongListTile(allSongs: songs, song: songs[index]);
+                    },
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }
