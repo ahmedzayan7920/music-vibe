@@ -23,10 +23,15 @@ class HomeFavorites extends StatelessWidget {
           if (state is FavoritesSuccessState) {
             List<SongModel> allFavoriteSongs = state.allFavoriteSongs;
             if (allFavoriteSongs.isEmpty) {
-              return Center(
-                child: Text(
-                  "No Favorites Found",
-                  style: Theme.of(context).textTheme.titleLarge,
+              return RefreshIndicator(
+              onRefresh: () async {
+                      context.read<FavoritesCubit>().queryFavorites();
+              },
+                child: Center(
+                  child: Text(
+                    "No Favorites Found",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                 ),
               );
             }

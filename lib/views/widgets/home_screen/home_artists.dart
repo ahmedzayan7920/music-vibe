@@ -22,10 +22,15 @@ class HomeArtists extends StatelessWidget {
           if (state is ArtistsSuccessState) {
             List<ArtistModel> allArtists = state.allArtists;
             if (allArtists.isEmpty) {
-              return Center(
-                child: Text(
-                  "No Artists Found",
-                  style: Theme.of(context).textTheme.titleLarge,
+              return RefreshIndicator(
+              onRefresh: () async {
+                context.read<ArtistsCubit>().refreshQueryAllArtists();
+              },
+                child: Center(
+                  child: Text(
+                    "No Artists Found",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                 ),
               );
             }

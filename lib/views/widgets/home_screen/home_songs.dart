@@ -23,10 +23,15 @@ class HomeSongs extends StatelessWidget {
           if (state is SongsSuccessState) {
             List<SongModel> allSongs = state.allSongs;
             if (allSongs.isEmpty) {
-              return Center(
-                child: Text(
-                  "No Sounds Found",
-                  style: Theme.of(context).textTheme.titleLarge,
+              return RefreshIndicator(
+              onRefresh: () async {
+                      context.read<SongsCubit>().refreshQueryAllSongs();
+              },
+                child: Center(
+                  child: Text(
+                    "No Sounds Found",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                 ),
               );
             }

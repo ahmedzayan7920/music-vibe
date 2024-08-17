@@ -22,10 +22,15 @@ class HomeAlbums extends StatelessWidget {
           if (state is AlbumsSuccessState) {
             List<AlbumModel> allAlbums = state.allAlbums;
             if (allAlbums.isEmpty) {
-              return Center(
-                child: Text(
-                  "No Albums Found",
-                  style: Theme.of(context).textTheme.titleLarge,
+              return RefreshIndicator(
+              onRefresh: () async {
+                context.read<AlbumsCubit>().refreshQueryAllAlbums();
+              },
+                child: Center(
+                  child: Text(
+                    "No Albums Found",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                 ),
               );
             }

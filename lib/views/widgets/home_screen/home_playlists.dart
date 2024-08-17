@@ -26,10 +26,15 @@ class HomePlaylists extends StatelessWidget {
           if (state is PlaylistsSuccessState) {
             List<PlaylistModel> allPlaylists = state.allPlaylists;
             if (allPlaylists.isEmpty) {
-              return Center(
-                child: Text(
-                  "No Playlists Found",
-                  style: Theme.of(context).textTheme.titleLarge,
+              return RefreshIndicator(
+              onRefresh: () async {
+                context.read<PlaylistsCubit>().refreshQueryAllPlaylists();
+              },
+                child: Center(
+                  child: Text(
+                    "No Playlists Found",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                 ),
               );
             }
