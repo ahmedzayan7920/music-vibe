@@ -7,7 +7,10 @@ import '../../../logic/bottom_navigation_cubit/bottom_navigation_state.dart';
 class HomeBottomNavigationBar extends StatelessWidget {
   const HomeBottomNavigationBar({
     super.key,
+    required this.pageController,
   });
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +18,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         return BottomNavigationBar(
+          fixedColor: Theme.of(context).colorScheme.primary,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.music_note_outlined),
@@ -38,6 +42,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
             ),
           ],
           type: BottomNavigationBarType.fixed,
+          // selectedItemColor: Theme.of(context).colorScheme.primary,
           unselectedItemColor: Colors.grey,
           currentIndex: context
               .read<BottomNavigationCubit>()
@@ -46,6 +51,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
             context
                 .read<BottomNavigationCubit>()
                 .setCurrentBottomNavigationIndex(value);
+            pageController.jumpToPage(value);
           },
         );
       },

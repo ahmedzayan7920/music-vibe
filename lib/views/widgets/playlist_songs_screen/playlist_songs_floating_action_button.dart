@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_vibe/logic/playlists_cubit/playlists_cubit.dart';
 import 'package:music_vibe/repositories/query_repository.dart';
+import 'package:music_vibe/views/widgets/common/list_tile_leading.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../core/di/dependency_injection.dart';
@@ -22,53 +23,72 @@ class PlaylistSongsFloatingActionButton extends StatelessWidget {
           builder: (context) {
             final allSongs = getIt<QueryRepository>().allSongs;
             return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: BorderSide(
+                  color: Colors.grey[200] ?? Colors.grey,
+                  width: .5,
+                ),
+              ),
               child: SizedBox(
-                height: 400,
+                height: MediaQuery.of(context).size.height * .5,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: ListView.builder(
-                    itemCount: allSongs.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(
-                          allSongs[index].title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        leading: SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Center(
-                            child: QueryArtworkWidget(
-                              quality: 100,
-                              controller: getIt(),
-                              id: allSongs[index].id,
-                              type: ArtworkType.AUDIO,
-                              nullArtworkWidget: const Icon(Icons.music_note),
+                  child: allSongs.isEmpty
+                      ? const Center(child: Text("No Sounds Found"))
+                      : Column(
+                          children: [
+                            const Text(
+                              "sounds",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: allSongs.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    title: Text(
+                                      allSongs[index].title,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    leading: ListTileLeading(
+                                      id: allSongs[index].id,
+                                      type: ArtworkType.AUDIO,
+                                      placeholderIcon:
+                                          Icons.music_note_outlined,
+                                    ),
+                                    onTap: () {
+                                      if (getIt<QueryRepository>()
+                                              .allPlaylistsSongs[playlistId]
+                                              ?.contains(allSongs[index]) ??
+                                          false) {
+                                        ScaffoldMessenger.of(context)
+                                          ..hideCurrentSnackBar()
+                                          ..showSnackBar(
+                                            const SnackBar(
+                                              content:
+                                                  Text("Song already Exists"),
+                                            ),
+                                          );
+                                      } else {
+                                        Navigator.pop(context);
+                                        getIt<PlaylistsCubit>()
+                                            .addSongToPlayList(
+                                          playlistId: playlistId,
+                                          songId: allSongs[index].id,
+                                        );
+                                      }
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                        onTap: () {
-                          if (getIt<QueryRepository>().allPlaylistsSongs[playlistId]
-                              ?.contains(allSongs[index])??false) {
-                            ScaffoldMessenger.of(context)
-                              ..hideCurrentSnackBar()
-                              ..showSnackBar(
-                                const SnackBar(
-                                  content: Text("Song already Exists"),
-                                ),
-                              );
-                          } else {
-                            Navigator.pop(context);
-                            getIt<PlaylistsCubit>().addSongToPlayList(
-                              playlistId: playlistId,
-                              songId: allSongs[index].id,
-                            );
-                          }
-                        },
-                      );
-                    },
-                  ),
                 ),
               ),
             );

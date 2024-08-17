@@ -40,6 +40,8 @@ class HomePlaylists extends StatelessWidget {
               child: ListView.builder(
                 itemCount: allPlaylists.length,
                 itemBuilder: (context, index) {
+                  print(
+                      "************ ${allPlaylists[index].data} ************");
                   return PlaylistListTile(
                     playlist: allPlaylists[index],
                     onTap: () {

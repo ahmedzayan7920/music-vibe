@@ -6,7 +6,8 @@ import '../../../core/di/dependency_injection.dart';
 import '../../../logic/playlists_cubit/playlists_cubit.dart';
 
 class PlaylistListTile extends StatelessWidget {
-  const PlaylistListTile({super.key, required this.playlist, required this.onTap});
+  const PlaylistListTile(
+      {super.key, required this.playlist, required this.onTap});
   final PlaylistModel playlist;
   final void Function() onTap;
 

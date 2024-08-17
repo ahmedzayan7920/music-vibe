@@ -30,7 +30,7 @@ class _SearchScreenState extends State<SearchScreen> {
           allSongs.isEmpty
               ? Center(
                   child: Text(
-                    "No Songs Found",
+                    "No Sounds Found",
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                 )

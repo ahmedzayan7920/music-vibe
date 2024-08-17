@@ -25,7 +25,7 @@ class HomeSongs extends StatelessWidget {
             if (allSongs.isEmpty) {
               return Center(
                 child: Text(
-                  "No Songs Found",
+                  "No Sounds Found",
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               );

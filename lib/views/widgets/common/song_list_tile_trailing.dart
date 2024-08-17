@@ -26,6 +26,9 @@ class SongListTileTrailing extends StatelessWidget {
             return [
               PopupMenuItem(
                 child: ListTile(
+                  leading: const Icon(
+                    Icons.playlist_add_outlined,
+                  ),
                   title: const Text("Add to Playlist"),
                   onTap: () {
                     showDialog(
@@ -34,50 +37,80 @@ class SongListTileTrailing extends StatelessWidget {
                         final allPlaylists =
                             getIt<QueryRepository>().allPlaylists;
                         return Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            side: BorderSide(
+                              color: Colors.grey[200] ?? Colors.grey,
+                              width: .5,
+                            ),
+                          ),
                           child: SizedBox(
-                            height: 400,
+                            height: MediaQuery.of(context).size.height * .5,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 16),
-                              child: ListView.builder(
-                                itemCount: allPlaylists.length,
-                                itemBuilder: (context, index) {
-                                  return PlaylistListTile(
-                                    playlist: allPlaylists[index],
-                                    onTap: () {
-                                      isSongExist(
-                                              playlistId:
-                                                  allPlaylists[index].id)
-                                          .then(
-                                        (isExist) {
-                                          if (isExist) {
-                                            if (context.mounted) {
-                                              ScaffoldMessenger.of(context)
-                                                ..hideCurrentSnackBar()
-                                                ..showSnackBar(
-                                                  const SnackBar(
-                                                    content: Text(
-                                                        "Song already Exists"),
-                                                  ),
-                                                );
-                                            }
-                                          } else {
-                                            getIt<PlaylistsCubit>()
-                                                .addSongToPlayList(
-                                              playlistId:
-                                                  allPlaylists[index].id,
-                                              songId: songId,
-                                            );
-                                            if (context.mounted) {
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
-                                            }
-                                          }
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
+                              child: allPlaylists.isEmpty
+                                  ? const Center(
+                                      child: Text("No Playlists Found"))
+                                  : Column(
+                                      children: [
+                                        const Text(
+                                          "Playlists",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: ListView.builder(
+                                            itemCount: allPlaylists.length,
+                                            itemBuilder: (context, index) {
+                                              return PlaylistListTile(
+                                                playlist: allPlaylists[index],
+                                                onTap: () {
+                                                  isSongExist(
+                                                          playlistId:
+                                                              allPlaylists[
+                                                                      index]
+                                                                  .id)
+                                                      .then(
+                                                    (isExist) {
+                                                      if (isExist) {
+                                                        if (context.mounted) {
+                                                          ScaffoldMessenger.of(
+                                                              context)
+                                                            ..hideCurrentSnackBar()
+                                                            ..showSnackBar(
+                                                              const SnackBar(
+                                                                content: Text(
+                                                                    "Song already Exists"),
+                                                              ),
+                                                            );
+                                                        }
+                                                      } else {
+                                                        getIt<PlaylistsCubit>()
+                                                            .addSongToPlayList(
+                                                          playlistId:
+                                                              allPlaylists[
+                                                                      index]
+                                                                  .id,
+                                                          songId: songId,
+                                                        );
+                                                        if (context.mounted) {
+                                                          Navigator.pop(
+                                                              context);
+                                                          Navigator.pop(
+                                                              context);
+                                                        }
+                                                      }
+                                                    },
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                             ),
                           ),
                         );
