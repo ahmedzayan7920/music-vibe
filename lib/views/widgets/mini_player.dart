@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:music_vibe/views/widgets/common/list_tile_leading.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../core/di/dependency_injection.dart';
@@ -7,8 +8,15 @@ import '../../core/handlers/song_handler.dart';
 import '../screens/player_screen.dart';
 import 'player_screen/play_pause_button.dart';
 
-class MiniPlayer extends StatelessWidget {
+class MiniPlayer extends StatefulWidget {
   const MiniPlayer({super.key});
+
+  @override
+  State<MiniPlayer> createState() => _MiniPlayerState();
+}
+
+class _MiniPlayerState extends State<MiniPlayer> {
+  Offset? _dragStartPos;
 
   @override
   Widget build(BuildContext context) {
@@ -23,59 +31,74 @@ class MiniPlayer extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: ListTile(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            tileColor: Theme.of(context).colorScheme.primary,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PlayerScreen(
-                    songs: const [],
-                    index: index,
-                    reOpen: true,
+        return GestureDetector(
+          onHorizontalDragStart: (details) => _dragStart(details),
+          onHorizontalDragEnd: (details) => _dragEnd(details),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: ListTile(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              tileColor: Theme.of(context).colorScheme.primary,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PlayerScreen(
+                      songs: const [],
+                      index: index,
+                      reOpen: true,
+                    ),
                   ),
-                ),
-              );
-            },
-            leading: SizedBox(
-              width: 50,
-              height: 50,
-              child: Center(
-                child: QueryArtworkWidget(
-                  id: int.parse(sequence[index].tag.id),
-                  type: ArtworkType.AUDIO,
-                  nullArtworkWidget: const Icon(
-                    Icons.music_note,
-                    color: Colors.white,
-                  ),
-                ),
+                );
+              },
+              leading: ListTileLeading(
+                id: int.parse(sequence[index].tag.id),
+                type: ArtworkType.AUDIO,
+                placeholderIcon: Icons.music_note_outlined,
               ),
-            ),
-            title: Text(
-              sequence[index].tag.title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: Colors.white,
+              title: Text(
+                sequence[index].tag.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(color: Colors.white),
               ),
-            ),
-            subtitle: Text(
-              sequence[index].tag.artist ?? "unknown",
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: Colors.grey,
+              subtitle: Text(
+                sequence[index].tag.artist ?? "unknown",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(color: Colors.grey),
               ),
+              trailing: const PlayPauseButton(color: Colors.white),
             ),
-            trailing: const PlayPauseButton(color: Colors.white),
           ),
         );
       },
     );
+  }
+
+  void _dragStart(DragStartDetails details) {
+    _dragStartPos = details.globalPosition;
+  }
+
+  void _dragEnd(DragEndDetails details) {
+    if (_dragStartPos == null) return;
+
+    final distance = (details.globalPosition - _dragStartPos!).dx;
+    final isHorizontalSwipe =
+        distance.abs() > 100; // Adjust distance threshold as needed
+
+    if (isHorizontalSwipe) {
+      final velocity = details.primaryVelocity!;
+      if (velocity < 0 && getIt<MyAudioHandler>().audioPlayer.hasNext) {
+        getIt<MyAudioHandler>().skipToNext();
+      } else if (velocity > 0 &&
+          getIt<MyAudioHandler>().audioPlayer.hasPrevious) {
+        getIt<MyAudioHandler>().skipToPrevious();
+      }
+    }
+
+    _dragStartPos = null;
   }
 }
