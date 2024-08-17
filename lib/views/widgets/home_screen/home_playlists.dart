@@ -27,14 +27,20 @@ class HomePlaylists extends StatelessWidget {
             List<PlaylistModel> allPlaylists = state.allPlaylists;
             if (allPlaylists.isEmpty) {
               return RefreshIndicator(
-              onRefresh: () async {
-                context.read<PlaylistsCubit>().refreshQueryAllPlaylists();
-              },
-                child: Center(
-                  child: Text(
-                    "No Playlists Found",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                onRefresh: () async {
+                  context.read<PlaylistsCubit>().refreshQueryAllPlaylists();
+                },
+                child: CustomScrollView(
+                  slivers: [
+                    SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          "No Playlists Found",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               );
             }

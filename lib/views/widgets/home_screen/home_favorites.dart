@@ -27,11 +27,17 @@ class HomeFavorites extends StatelessWidget {
               onRefresh: () async {
                       context.read<FavoritesCubit>().queryFavorites();
               },
-                child: Center(
-                  child: Text(
-                    "No Favorites Found",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                child: CustomScrollView(
+                  slivers: [
+                    SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          "No Favorites Found",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               );
             }

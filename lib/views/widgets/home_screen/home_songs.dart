@@ -24,14 +24,20 @@ class HomeSongs extends StatelessWidget {
             List<SongModel> allSongs = state.allSongs;
             if (allSongs.isEmpty) {
               return RefreshIndicator(
-              onRefresh: () async {
-                      context.read<SongsCubit>().refreshQueryAllSongs();
-              },
-                child: Center(
-                  child: Text(
-                    "No Sounds Found",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                onRefresh: () async {
+                  context.read<SongsCubit>().refreshQueryAllSongs();
+                },
+                child: CustomScrollView(
+                  slivers: [
+                    SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          "No Sounds Found",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               );
             }

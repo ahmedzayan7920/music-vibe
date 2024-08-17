@@ -26,11 +26,17 @@ class HomeAlbums extends StatelessWidget {
               onRefresh: () async {
                 context.read<AlbumsCubit>().refreshQueryAllAlbums();
               },
-                child: Center(
-                  child: Text(
-                    "No Albums Found",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                child: CustomScrollView(
+                  slivers: [
+                    SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          "No Albums Found",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               );
             }

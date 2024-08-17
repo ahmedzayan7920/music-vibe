@@ -26,11 +26,17 @@ class HomeArtists extends StatelessWidget {
               onRefresh: () async {
                 context.read<ArtistsCubit>().refreshQueryAllArtists();
               },
-                child: Center(
-                  child: Text(
-                    "No Artists Found",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                child: CustomScrollView(
+                  slivers: [
+                    SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          "No Artists Found",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               );
             }
