@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_vibe/core/di/dependency_injection.dart';
-import 'package:music_vibe/logic/cubit/playlists_cubit.dart';
+import 'package:music_vibe/logic/playlists_cubit/playlists_cubit.dart';
 import 'package:music_vibe/repositories/query_repository.dart';
 import 'package:music_vibe/views/widgets/common/playlist_list_tile.dart';
 import 'package:on_audio_query/on_audio_query.dart';

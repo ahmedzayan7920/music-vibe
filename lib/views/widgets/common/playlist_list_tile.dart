@@ -3,7 +3,7 @@ import 'package:music_vibe/views/widgets/common/list_tile_leading.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../core/di/dependency_injection.dart';
-import '../../../logic/cubit/playlists_cubit.dart';
+import '../../../logic/playlists_cubit/playlists_cubit.dart';
 
 class PlaylistListTile extends StatelessWidget {
   const PlaylistListTile({super.key, required this.playlist, required this.onTap});

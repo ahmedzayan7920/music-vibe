@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_vibe/core/di/dependency_injection.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../../../logic/cubit/playlists_cubit.dart';
-import '../../../logic/cubit/playlists_state.dart';
+import '../../../logic/playlists_cubit/playlists_cubit.dart';
+import '../../../logic/playlists_cubit/playlists_state.dart';
 import '../../screens/playlist_songs_screen.dart';
 import '../common/playlist_list_tile.dart';
 

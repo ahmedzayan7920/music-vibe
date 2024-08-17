@@ -11,10 +11,12 @@ class QueryRepository {
 
   List<SongModel> _allSongs = [];
   List<PlaylistModel> _allPlaylists = [];
+  List<AlbumModel> _allAlbums = [];
   final Map<int, List<SongModel>> _allPlaylistsSongs = {};
 
   List<SongModel> get allSongs => _allSongs;
   List<PlaylistModel> get allPlaylists => _allPlaylists;
+  List<AlbumModel> get allAlbums => _allAlbums;
   Map<int, List<SongModel>> get allPlaylistsSongs => _allPlaylistsSongs;
 
   Future<Either<Failure, List<SongModel>>> queryAllSongs() async {
@@ -30,6 +32,15 @@ class QueryRepository {
     try {
       _allPlaylists = await _audioQuery.queryPlaylists();
       return right(_allPlaylists);
+    } catch (error) {
+      return left(Failure(message: error.toString()));
+    }
+  }
+
+  Future<Either<Failure, List<AlbumModel>>> queryAllAlbums() async {
+    try {
+      _allAlbums = await _audioQuery.queryAlbums();
+      return right(_allAlbums);
     } catch (error) {
       return left(Failure(message: error.toString()));
     }

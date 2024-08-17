@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_vibe/logic/cubit/playlists_cubit.dart';
+import 'package:music_vibe/logic/playlists_cubit/playlists_cubit.dart';
 import 'package:music_vibe/repositories/query_repository.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_vibe/logic/cubit/playlists_cubit.dart';
+import 'package:music_vibe/logic/playlists_cubit/playlists_cubit.dart';
 
 import '../../../core/di/dependency_injection.dart';
 
