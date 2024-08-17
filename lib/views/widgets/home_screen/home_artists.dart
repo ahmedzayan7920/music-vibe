@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../../core/di/dependency_injection.dart';
+import '../../../logic/artists_cubit/artists_cubit.dart';
+import '../../../logic/artists_cubit/artists_state.dart';
+import '../common/artist_list_tile copy.dart';
 
 class HomeArtists extends StatelessWidget {
   const HomeArtists({
@@ -7,8 +14,38 @@ class HomeArtists extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Home Artists"),
+    return BlocProvider.value(
+      value: getIt<ArtistsCubit>()..queryAllArtists(),
+      child: BlocBuilder<ArtistsCubit, ArtistsState>(
+        buildWhen: (previous, current) => previous != current,
+        builder: (context, state) {
+          if (state is ArtistsSuccessState) {
+            List<ArtistModel> allArtists = state.allArtists;
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<ArtistsCubit>().refreshQueryAllArtists();
+              },
+              child: ListView.builder(
+                itemCount: allArtists.length,
+                itemBuilder: (context, index) {
+                  ArtistModel artist = allArtists[index];
+                  return ArtistListTile(
+                    artist: artist,
+                  );
+                },
+              ),
+            );
+          } else if (state is ArtistsFailureState) {
+            return Center(
+              child: Text(state.message),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
     );
   }
 }
