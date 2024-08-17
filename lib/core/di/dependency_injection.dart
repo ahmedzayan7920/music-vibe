@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:music_vibe/core/handlers/song_handler.dart';
 import 'package:music_vibe/logic/albums_cubit/albums_cubit.dart';
+import 'package:music_vibe/logic/favorites_cubit/favorites_cubit.dart';
 import 'package:music_vibe/logic/playlists_cubit/playlists_cubit.dart';
 import 'package:music_vibe/logic/songs_cubit/songs_cubit.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -17,11 +18,15 @@ initDependencyInjection() async {
   getIt.registerSingleton<MyAudioHandler>(await initAudioService());
   getIt.registerLazySingleton<OnAudioQuery>(() => OnAudioQuery());
   getIt.registerLazySingleton<QueryRepository>(
-    () => QueryRepository(audioQuery: getIt<OnAudioQuery>())
+    () => QueryRepository(
+      audioQuery: getIt<OnAudioQuery>(),
+      sharedPreferences: getIt<SharedPreferences>(),
+    )
       ..queryAllSongs()
       ..queryAllPlaylists()
       ..queryAllAlbums()
-      ..queryAllArtists(),
+      ..queryAllArtists()
+      ..queryFavoriteSongs(),
   );
   getIt.registerLazySingleton<SongsCubit>(
     () => SongsCubit(
@@ -41,6 +46,11 @@ initDependencyInjection() async {
   );
   getIt.registerLazySingleton<ArtistsCubit>(
     () => ArtistsCubit(
+      queryRepository: getIt<QueryRepository>(),
+    ),
+  );
+  getIt.registerLazySingleton<FavoritesCubit>(
+    () => FavoritesCubit(
       queryRepository: getIt<QueryRepository>(),
     ),
   );

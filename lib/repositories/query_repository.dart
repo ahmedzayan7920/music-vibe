@@ -1,18 +1,26 @@
 import 'package:dartz/dartz.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/failure/failure.dart';
 
 class QueryRepository {
   final OnAudioQuery _audioQuery;
+  final SharedPreferences _sharedPreferences;
 
-  QueryRepository({required OnAudioQuery audioQuery})
-      : _audioQuery = audioQuery;
+  QueryRepository(
+      {required OnAudioQuery audioQuery,
+      required SharedPreferences sharedPreferences})
+      : _audioQuery = audioQuery,
+        _sharedPreferences = sharedPreferences {
+    _getFavoriteIds();
+  }
 
   List<SongModel> _allSongs = [];
   List<PlaylistModel> _allPlaylists = [];
   List<AlbumModel> _allAlbums = [];
   List<ArtistModel> _allArtists = [];
+  List<int> favoriteIds = [];
   final Map<int, List<SongModel>> _allPlaylistsSongs = {};
 
   List<SongModel> get allSongs => _allSongs;
@@ -86,5 +94,35 @@ class QueryRepository {
     } catch (error) {
       return left(Failure(message: error.toString()));
     }
+  }
+
+  List<SongModel> queryFavoriteSongs() {
+    final allFavoriteSongs =
+        _allSongs.where((song) => favoriteIds.contains(song.id)).toList();
+    return allFavoriteSongs;
+  }
+
+  List<SongModel> toggleFavorite({required int id}) {
+    if (favoriteIds.contains(id)) {
+      favoriteIds.remove(id);
+      _sharedPreferences.setStringList(
+          "favorite", favoriteIds.map((e) => e.toString()).toList());
+      return queryFavoriteSongs();
+    } else {
+      favoriteIds.add(id);
+      _sharedPreferences.setStringList(
+          "favorite", favoriteIds.map((e) => e.toString()).toList());
+      return queryFavoriteSongs();
+    }
+  }
+
+  _getFavoriteIds() {
+    favoriteIds = _sharedPreferences
+            .getStringList("favorite")
+            ?.map(
+              (e) => int.parse(e),
+            )
+            .toList() ??
+        [];
   }
 }

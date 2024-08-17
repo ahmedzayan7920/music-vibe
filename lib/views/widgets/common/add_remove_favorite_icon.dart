@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_vibe/logic/favorites_cubit/favorites_cubit.dart';
+import 'package:music_vibe/logic/favorites_cubit/favorites_state.dart';
+import 'package:music_vibe/repositories/query_repository.dart';
+
+import '../../../core/di/dependency_injection.dart';
 
 class AddRemoveFavoriteIcon extends StatelessWidget {
   const AddRemoveFavoriteIcon({
@@ -10,32 +16,24 @@ class AddRemoveFavoriteIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {},
-      icon: const Icon(
-        Icons.favorite_outline,
+    return BlocProvider.value(
+      value: getIt<FavoritesCubit>(),
+      child: BlocBuilder<FavoritesCubit, FavoritesState>(
+        builder: (context, state) {
+          return IconButton(
+            onPressed: () {
+              getIt<FavoritesCubit>().toggleFavorite(
+                id: id,
+              );
+            },
+            icon: Icon(
+              getIt<QueryRepository>().favoriteIds.contains(id)
+                  ? Icons.favorite
+                  : Icons.favorite_outline,
+            ),
+          );
+        },
       ),
     );
-    // return BlocProvider.value(
-    //   value: getIt<MusicPlayerCubit>(),
-    //   child: BlocBuilder<MusicPlayerCubit, MusicPlayerState>(
-    //     buildWhen: (previous, current) =>
-    //         current is MusicPlayerAddRemoveFavoriteSongState,
-    //     builder: (context, state) {
-    //       return IconButton(
-    //         onPressed: () {
-    //           getIt<MusicPlayerCubit>().toggleFavorite(
-    //             id: id,
-    //           );
-    //         },
-    //         icon: Icon(
-    //           getIt<MusicPlayerCubit>().favoriteSongsIds.contains(id)
-    //               ? Icons.favorite
-    //               : Icons.favorite_outline,
-    //         ),
-    //       );
-    //     },
-    //   ),
-    // );
   }
 }

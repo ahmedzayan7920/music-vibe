@@ -5,7 +5,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../../core/di/dependency_injection.dart';
 import '../../../logic/artists_cubit/artists_cubit.dart';
 import '../../../logic/artists_cubit/artists_state.dart';
-import '../common/artist_list_tile copy.dart';
+import '../common/artist_list_tile.dart';
 
 class HomeArtists extends StatelessWidget {
   const HomeArtists({

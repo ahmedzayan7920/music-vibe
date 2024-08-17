@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:music_vibe/views/widgets/common/list_tile_leading.dart';
+import 'package:music_vibe/views/widgets/common/song_list_tile_trailing.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -40,22 +42,18 @@ class _PlayerSongsListState extends State<PlayerSongsList> {
           itemBuilder: (context, index) {
             return ListTile(
               selected: index == currentIndex,
-              leading: SizedBox(
-                width: 50,
-                height: 50,
-                child: Center(
-                  child: QueryArtworkWidget(
-                    id: int.parse(sequence[index].tag.id),
-                    type: ArtworkType.AUDIO,
-                    nullArtworkWidget: const Icon(Icons.music_note),
-                  ),
-                ),
+              leading: ListTileLeading(
+                id: int.parse(sequence[index].tag.id),
+                type: ArtworkType.AUDIO,
+                placeholderIcon: Icons.music_note_outlined,
               ),
               title: Text(
                 sequence[index].tag.title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
+              trailing: SongListTileTrailing(
+                  songId: int.parse(sequence[index].tag.id)),
               onTap: () {
                 getIt<MyAudioHandler>().seek(Duration.zero, index: index);
               },
