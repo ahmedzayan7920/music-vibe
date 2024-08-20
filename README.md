@@ -57,7 +57,7 @@
 <ul>
     <li><strong>LinkedIn</strong>: <a href="https://www.linkedin.com/in/ahmed-zayan-716789250/">Ahmed Zayan</a></li>
     <li><strong>Email</strong>: <a href="mailto:ahmedabdallazayan@gmail.com">ahmedabdallazayan@gmail.com</a></li>
-    <li><strong>GitHub</strong>: <a href="https://github.com/ahmedzayan7920">ahmedzayan7920</a></li>
+    <li><strong>WhatsApp</strong>: <a href="https://wa.me/201008537926">+201008537926</a></li>
 </ul>
 
 </body>
