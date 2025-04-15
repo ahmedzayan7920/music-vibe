@@ -40,6 +40,10 @@ class HomeBottomNavigationBar extends StatelessWidget {
               icon: Icon(Icons.favorite_border_outlined),
               label: "Favorites",
             ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.folder_outlined),
+              label: "Folders",
+            ),
           ],
           type: BottomNavigationBarType.fixed,
           // selectedItemColor: Theme.of(context).colorScheme.primary,

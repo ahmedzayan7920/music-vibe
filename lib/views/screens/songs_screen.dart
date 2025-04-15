@@ -23,8 +23,11 @@ class _SongsScreenState extends State<SongsScreen> {
   void initState() {
     songs = getIt<QueryRepository>().allSongs.where(
       (song) {
+        
         if (widget.type == AudiosFromType.ALBUM) {
           return song.album == widget.title;
+        }else if (widget.type == AudiosFromType.GENRE) {
+          return song.data.contains(widget.title);
         } else {
           return song.artist == widget.title;
         }

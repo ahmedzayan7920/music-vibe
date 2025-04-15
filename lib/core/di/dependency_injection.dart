@@ -8,6 +8,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../logic/artists_cubit/artists_cubit.dart';
+import '../../logic/folders_cubit/folders_cubit.dart';
 import '../../repositories/query_repository.dart';
 
 var getIt = GetIt.instance;
@@ -51,6 +52,11 @@ initDependencyInjection() async {
   );
   getIt.registerLazySingleton<FavoritesCubit>(
     () => FavoritesCubit(
+      queryRepository: getIt<QueryRepository>(),
+    ),
+  );
+  getIt.registerLazySingleton<FoldersCubit>(
+    () => FoldersCubit(
       queryRepository: getIt<QueryRepository>(),
     ),
   );

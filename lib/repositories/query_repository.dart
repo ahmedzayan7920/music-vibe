@@ -20,6 +20,7 @@ class QueryRepository {
   List<PlaylistModel> _allPlaylists = [];
   List<AlbumModel> _allAlbums = [];
   List<ArtistModel> _allArtists = [];
+  List<String> _allFolders = [];
   List<int> favoriteIds = [];
   final Map<int, List<SongModel>> _allPlaylistsSongs = {};
 
@@ -27,6 +28,7 @@ class QueryRepository {
   List<PlaylistModel> get allPlaylists => _allPlaylists;
   List<AlbumModel> get allAlbums => _allAlbums;
   List<ArtistModel> get allArtists => _allArtists;
+  List<String> get allFolders => _allFolders;
   Map<int, List<SongModel>> get allPlaylistsSongs => _allPlaylistsSongs;
 
   Future<Either<Failure, List<SongModel>>> queryAllSongs() async {
@@ -124,5 +126,22 @@ class QueryRepository {
             )
             .toList() ??
         [];
+  }
+
+  Future<Either<Failure, List<String>>> queryAllFolders() async {
+    try {
+      _allFolders  = await _audioQuery.queryAllPath();
+      return right(_allFolders);
+    } catch (error) {
+      return left(Failure(message: error.toString()));
+    }
+  }
+
+  Future<Either<Failure, List<SongModel>>> queryFolderSongs({required String folder}) async {
+    try {
+      return right(await _audioQuery.querySongs(path: folder));
+    } catch (error) {
+      return left(Failure(message: error.toString()));
+    }
   }
 }
