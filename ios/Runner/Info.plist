@@ -49,5 +49,10 @@
 		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<!-- Permission strings required by plugins that access the media library or microphone. -->
+		<key>NSAppleMusicUsageDescription</key>
+		<string>This app needs access to your media library to list and play local songs.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>This app needs access to the microphone for audio recording and metadata.</string>
 	</dict>
 </plist>
