@@ -7,8 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'core/di/dependency_injection.dart';
 import 'core/handlers/app_bloc_observer.dart';
 import 'core/handlers/song_handler.dart';
-import 'logic/app_cubit/app_state.dart';
 import 'core/theming/app_themes.dart';
+import 'logic/app_cubit/app_state.dart';
 import 'views/screens/home_screen.dart';
 import 'views/screens/permissions_screen.dart';
 
@@ -35,10 +35,12 @@ class MyApp extends StatelessWidget {
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
           return MaterialApp(
-            title: 'Flutter Demo',
+            title: 'Music Vibe',
             theme: AppThemes.lightTheme,
             darkTheme: AppThemes.darkTheme,
-            themeMode: context.read<AppCubit>().isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            themeMode: context.read<AppCubit>().isDarkMode
+                ? ThemeMode.dark
+                : ThemeMode.light,
             home:
                 _hasPermission ? const HomeScreen() : const PermissionsScreen(),
           );

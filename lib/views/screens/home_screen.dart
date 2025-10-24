@@ -60,8 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 HomePlaylists(),
                 HomeAlbums(),
                 HomeArtists(),
-                HomeFavorites(),
                 HomeFolders(),
+                HomeFavorites(),
               ],
             ),
             bottomNavigationBar: Column(

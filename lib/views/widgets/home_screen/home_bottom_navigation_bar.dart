@@ -37,12 +37,12 @@ class HomeBottomNavigationBar extends StatelessWidget {
               label: "Artists",
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_border_outlined),
-              label: "Favorites",
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.folder_outlined),
               label: "Folders",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_border_outlined),
+              label: "Favorites",
             ),
           ],
           type: BottomNavigationBarType.fixed,

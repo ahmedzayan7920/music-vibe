@@ -4,15 +4,15 @@ import 'dart:convert';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:music_vibe/core/extensions/extensions.dart';
 import 'package:music_vibe/core/di/dependency_injection.dart';
+import 'package:music_vibe/core/extensions/extensions.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<MyAudioHandler> initAudioService() async {
   return await AudioService.init<MyAudioHandler>(
       builder: () => MyAudioHandler(),
-      config:  AudioServiceConfig(
+      config: AudioServiceConfig(
         androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
         androidNotificationChannelName: 'Audio playback',
         androidShowNotificationBadge: true,
@@ -20,6 +20,7 @@ Future<MyAudioHandler> initAudioService() async {
         androidNotificationOngoing: true,
         androidResumeOnClick: true,
         notificationColor: Colors.grey[900],
+        androidNotificationIcon: 'drawable/ic_launcher_foreground',
       ));
 }
 
@@ -33,7 +34,7 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
     _audioPlayer.playbackEventStream.map(_transformEvent).pipe(playbackState);
     // Listen to the sequenceStateStream and update the notification
     _audioPlayer.sequenceStateStream.listen((sequenceState) {
-      if (sequenceState != null && sequenceState.currentSource != null) {
+      if (sequenceState.currentSource != null) {
         final mediaItem = _convertToMediaItem(sequenceState.currentSource!);
         _updateNotification(mediaItem);
       }
