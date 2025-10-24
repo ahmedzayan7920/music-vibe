@@ -55,7 +55,11 @@ class HomeBottomNavigationBar extends StatelessWidget {
             context
                 .read<BottomNavigationCubit>()
                 .setCurrentBottomNavigationIndex(value);
-            pageController.jumpToPage(value);
+            pageController.animateToPage(
+              value,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
           },
         );
       },
