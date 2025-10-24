@@ -29,7 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
         children: [
           SearchFormField(onChanged: getSearchSongs),
           allSongs.isEmpty
-              ? const EmptyState(message: 'No Sounds Found')
+              ? const Expanded(child: EmptyState(message: 'No Sounds Found'))
               : Expanded(
                   child: Column(
                     children: [
