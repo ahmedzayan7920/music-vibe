@@ -5,6 +5,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../core/di/dependency_injection.dart';
 import '../../../logic/songs_cubit/songs_state.dart';
+import '../common/empty_state.dart';
 import '../common/shuffle_list_tile.dart';
 import '../common/song_list_tile.dart';
 
@@ -30,12 +31,7 @@ class HomeSongs extends StatelessWidget {
                 child: CustomScrollView(
                   slivers: [
                     SliverFillRemaining(
-                      child: Center(
-                        child: Text(
-                          "No Sounds Found",
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ),
+                      child: EmptyState(message: 'No Sounds Found'),
                     ),
                   ],
                 ),

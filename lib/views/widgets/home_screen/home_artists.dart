@@ -6,6 +6,7 @@ import '../../../core/di/dependency_injection.dart';
 import '../../../logic/artists_cubit/artists_cubit.dart';
 import '../../../logic/artists_cubit/artists_state.dart';
 import '../common/artist_list_tile.dart';
+import '../common/empty_state.dart';
 
 class HomeArtists extends StatelessWidget {
   const HomeArtists({
@@ -23,18 +24,13 @@ class HomeArtists extends StatelessWidget {
             List<ArtistModel> allArtists = state.allArtists;
             if (allArtists.isEmpty) {
               return RefreshIndicator(
-              onRefresh: () async {
-                context.read<ArtistsCubit>().refreshQueryAllArtists();
-              },
+                onRefresh: () async {
+                  context.read<ArtistsCubit>().refreshQueryAllArtists();
+                },
                 child: CustomScrollView(
                   slivers: [
                     SliverFillRemaining(
-                      child: Center(
-                        child: Text(
-                          "No Artists Found",
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ),
+                      child: EmptyState(message: 'No Artists Found'),
                     ),
                   ],
                 ),

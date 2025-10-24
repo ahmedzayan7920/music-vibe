@@ -6,6 +6,7 @@ import '../../../core/di/dependency_injection.dart';
 import '../../../logic/albums_cubit/albums_cubit.dart';
 import '../../../logic/albums_cubit/albums_state.dart';
 import '../common/album_list_tile.dart';
+import '../common/empty_state.dart';
 
 class HomeAlbums extends StatelessWidget {
   const HomeAlbums({
@@ -23,18 +24,13 @@ class HomeAlbums extends StatelessWidget {
             List<AlbumModel> allAlbums = state.allAlbums;
             if (allAlbums.isEmpty) {
               return RefreshIndicator(
-              onRefresh: () async {
-                context.read<AlbumsCubit>().refreshQueryAllAlbums();
-              },
+                onRefresh: () async {
+                  context.read<AlbumsCubit>().refreshQueryAllAlbums();
+                },
                 child: CustomScrollView(
                   slivers: [
                     SliverFillRemaining(
-                      child: Center(
-                        child: Text(
-                          "No Albums Found",
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ),
+                      child: EmptyState(message: 'No Albums Found'),
                     ),
                   ],
                 ),

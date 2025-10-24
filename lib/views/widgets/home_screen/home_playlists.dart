@@ -6,6 +6,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../../logic/playlists_cubit/playlists_cubit.dart';
 import '../../../logic/playlists_cubit/playlists_state.dart';
 import '../../screens/playlist_songs_screen.dart';
+import '../common/empty_state.dart';
 import '../common/playlist_list_tile.dart';
 
 class HomePlaylists extends StatelessWidget {
@@ -33,12 +34,7 @@ class HomePlaylists extends StatelessWidget {
                 child: CustomScrollView(
                   slivers: [
                     SliverFillRemaining(
-                      child: Center(
-                        child: Text(
-                          "No Playlists Found",
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ),
+                      child: EmptyState(message: 'No Playlists Found'),
                     ),
                   ],
                 ),
@@ -51,8 +47,6 @@ class HomePlaylists extends StatelessWidget {
               child: ListView.builder(
                 itemCount: allPlaylists.length,
                 itemBuilder: (context, index) {
-                  print(
-                      "************ ${allPlaylists[index].data} ************");
                   return PlaylistListTile(
                     playlist: allPlaylists[index],
                     onTap: () {

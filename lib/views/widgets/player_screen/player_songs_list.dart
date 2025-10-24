@@ -17,6 +17,8 @@ class PlayerSongsList extends StatefulWidget {
 
 class _PlayerSongsListState extends State<PlayerSongsList> {
   final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
   int? previousIndex;
   int currentIndex = 0;
 
@@ -28,7 +30,6 @@ class _PlayerSongsListState extends State<PlayerSongsList> {
         final state = snapshot.data;
         final sequence = state?.sequence ?? [];
         currentIndex = state?.currentIndex ?? 0;
-        // Only scroll if the current index has changed
         if (currentIndex != previousIndex) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             _scrollToPlayingSong(sequence.length);
@@ -36,6 +37,7 @@ class _PlayerSongsListState extends State<PlayerSongsList> {
         }
         return ScrollablePositionedList.builder(
           itemScrollController: itemScrollController,
+          itemPositionsListener: itemPositionsListener,
           itemCount: sequence.length,
           initialScrollIndex: currentIndex,
           initialAlignment: 0,
@@ -68,11 +70,41 @@ class _PlayerSongsListState extends State<PlayerSongsList> {
     if (currentIndex != previousIndex &&
         currentIndex >= 0 &&
         currentIndex < sequenceLength) {
-      itemScrollController.jumpTo(
-        index: currentIndex,
-        // duration: const Duration(milliseconds: 500),
-        alignment: 0,
-      );
+      final positions = itemPositionsListener.itemPositions.value;
+
+      if (positions.isNotEmpty) {
+        final visibleIndices = positions.map((p) => p.index).toList()..sort();
+        final minVisible = visibleIndices.first;
+        final maxVisible = visibleIndices.last;
+
+        if (currentIndex >= minVisible && currentIndex <= maxVisible) {
+          previousIndex = currentIndex;
+          return;
+        }
+
+        const animateThreshold = 30;
+        final distance = currentIndex < minVisible
+            ? (minVisible - currentIndex)
+            : (currentIndex - maxVisible);
+
+        if (distance > animateThreshold) {
+          itemScrollController.jumpTo(
+            index: currentIndex,
+            alignment: 0,
+          );
+        } else {
+          itemScrollController.scrollTo(
+            index: currentIndex,
+            duration: const Duration(milliseconds: 250),
+            alignment: 0,
+          );
+        }
+      } else {
+        itemScrollController.jumpTo(
+          index: currentIndex,
+          alignment: 0,
+        );
+      }
       previousIndex = currentIndex;
     }
   }

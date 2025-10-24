@@ -4,6 +4,7 @@ import 'package:music_vibe/logic/playlists_cubit/playlists_cubit.dart';
 
 import '../../core/di/dependency_injection.dart';
 import '../../logic/playlists_cubit/playlists_state.dart';
+import '../widgets/common/empty_state.dart';
 import '../widgets/common/shuffle_list_tile.dart';
 import '../widgets/mini_player.dart';
 import '../widgets/playlist_songs_screen/playlist_song_list_tile.dart';
@@ -35,12 +36,7 @@ class PlaylistSongsScreen extends StatelessWidget {
             if (state is PlaylistSongsSuccessState) {
               final allSongs = state.allSongs;
               if (allSongs.isEmpty) {
-                return Center(
-                  child: Text(
-                    "No Sounds Found",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                );
+                return const EmptyState(message: 'No Sounds Found');
               }
               return Column(
                 children: [
@@ -72,7 +68,7 @@ class PlaylistSongsScreen extends StatelessWidget {
             }
           },
         ),
-        bottomNavigationBar: const MiniPlayer(),
+        bottomNavigationBar: SafeArea(child: const MiniPlayer()),
         floatingActionButton:
             PlaylistSongsFloatingActionButton(playlistId: playlistId),
       ),

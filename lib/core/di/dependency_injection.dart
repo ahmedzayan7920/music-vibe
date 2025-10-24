@@ -13,7 +13,7 @@ import '../../repositories/query_repository.dart';
 
 var getIt = GetIt.instance;
 
-initDependencyInjection() async {
+Future<void> initDependencyInjection() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
   getIt.registerSingleton<MyAudioHandler>(await initAudioService());

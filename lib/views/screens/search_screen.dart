@@ -5,6 +5,7 @@ import 'package:music_vibe/views/widgets/common/song_list_tile.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../core/di/dependency_injection.dart';
+import '../widgets/common/empty_state.dart';
 import '../widgets/mini_player.dart';
 import '../widgets/search_screen/search_form_field.dart';
 
@@ -28,12 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
         children: [
           SearchFormField(onChanged: getSearchSongs),
           allSongs.isEmpty
-              ? Center(
-                  child: Text(
-                    "No Sounds Found",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                )
+              ? const EmptyState(message: 'No Sounds Found')
               : Expanded(
                   child: Column(
                     children: [
@@ -52,11 +48,11 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
         ],
       ),
-      bottomNavigationBar: const MiniPlayer(),
+      bottomNavigationBar: SafeArea(child: const MiniPlayer()),
     );
   }
 
-  getSearchSongs(String query) {
+  void getSearchSongs(String query) {
     allSongs = getIt<QueryRepository>()
         .allSongs
         .where((e) => e.title.toLowerCase().contains(query.toLowerCase()))

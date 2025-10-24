@@ -10,7 +10,7 @@ class FoldersCubit extends Cubit<FoldersState> {
       : _queryRepository = queryRepository,
         super(FoldersInitialState());
 
-  queryAllFolders() async {
+  Future<void> queryAllFolders() async {
     emit(FoldersLoadingState());
     if (_queryRepository.allFolders.isEmpty) {
       _queryFolders();
@@ -19,12 +19,12 @@ class FoldersCubit extends Cubit<FoldersState> {
     }
   }
 
-  refreshQueryAllFolders() async {
+  Future<void> refreshQueryAllFolders() async {
     emit(FoldersLoadingState());
     _queryFolders();
   }
 
-  _queryFolders() async {
+  Future<void> _queryFolders() async {
     final result = await _queryRepository.queryAllFolders();
     result.fold(
       (failure) {

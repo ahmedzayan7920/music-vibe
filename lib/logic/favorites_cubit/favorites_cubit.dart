@@ -10,12 +10,12 @@ class FavoritesCubit extends Cubit<FavoritesState> {
       : _queryRepository = queryRepository,
         super(FavoritesInitialState());
 
-  queryFavorites() {
+  void queryFavorites() {
     final favorites = _queryRepository.queryFavoriteSongs();
     emit(FavoritesSuccessState(allFavoriteSongs: favorites));
   }
 
-  toggleFavorite({required int id}) {
+  void toggleFavorite({required int id}) {
     final favorites = _queryRepository.toggleFavorite(id: id);
     emit(FavoritesSuccessState(allFavoriteSongs: favorites));
   }

@@ -89,7 +89,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
                     Icon(
                       Icons.warning,
                       size: 100,
-                      color: Colors.redAccent.withOpacity(0.8),
+                      color: Colors.redAccent.withValues(alpha: 0.8),
                     ),
                     const SizedBox(height: 20),
                     const Text(

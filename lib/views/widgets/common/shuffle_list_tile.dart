@@ -38,7 +38,7 @@ class ShuffleListTile extends StatelessWidget {
     );
   }
 
-  _goNext(BuildContext context) {
+  void _goNext(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(

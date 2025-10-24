@@ -18,7 +18,10 @@ class SearchFormField extends StatelessWidget {
               color: Theme.of(context).colorScheme.onSurface),
           hintText: 'Search for songs...',
           hintStyle: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0.6)),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: Colors.grey),

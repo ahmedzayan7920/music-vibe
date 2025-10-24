@@ -3,6 +3,7 @@ import 'package:music_vibe/core/di/dependency_injection.dart';
 import 'package:music_vibe/repositories/query_repository.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import '../widgets/common/empty_state.dart';
 import '../widgets/common/shuffle_list_tile.dart';
 import '../widgets/common/song_list_tile.dart';
 
@@ -23,10 +24,9 @@ class _SongsScreenState extends State<SongsScreen> {
   void initState() {
     songs = getIt<QueryRepository>().allSongs.where(
       (song) {
-        
         if (widget.type == AudiosFromType.ALBUM) {
           return song.album == widget.title;
-        }else if (widget.type == AudiosFromType.GENRE) {
+        } else if (widget.type == AudiosFromType.GENRE) {
           return song.data.contains(widget.title);
         } else {
           return song.artist == widget.title;
@@ -43,12 +43,7 @@ class _SongsScreenState extends State<SongsScreen> {
         title: Text(widget.title),
       ),
       body: (songs.isEmpty)
-          ? Center(
-              child: Text(
-                "No Sounds Found",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            )
+          ? const EmptyState(message: 'No Sounds Found')
           : Column(
               children: [
                 songs.isEmpty

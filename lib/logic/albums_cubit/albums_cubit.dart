@@ -10,7 +10,7 @@ class AlbumsCubit extends Cubit<AlbumsState> {
       : _queryRepository = queryRepository,
         super(AlbumsInitialState());
 
-  queryAllAlbums() async {
+  Future<void> queryAllAlbums() async {
     emit(AlbumsLoadingState());
     if (_queryRepository.allAlbums.isEmpty) {
       _queryAlbums();
@@ -19,12 +19,12 @@ class AlbumsCubit extends Cubit<AlbumsState> {
     }
   }
 
-  refreshQueryAllAlbums() async {
+  Future<void> refreshQueryAllAlbums() async {
     emit(AlbumsLoadingState());
     _queryAlbums();
   }
 
-  _queryAlbums() async {
+  Future<void> _queryAlbums() async {
     final result = await _queryRepository.queryAllAlbums();
     result.fold(
       (failure) {

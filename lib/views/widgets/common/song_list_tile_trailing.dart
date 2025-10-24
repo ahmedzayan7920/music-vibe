@@ -6,6 +6,7 @@ import 'package:music_vibe/views/widgets/common/playlist_list_tile.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import 'add_remove_favorite_icon.dart';
+import 'empty_state.dart';
 
 class SongListTileTrailing extends StatelessWidget {
   const SongListTileTrailing({
@@ -50,7 +51,8 @@ class SongListTileTrailing extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               child: allPlaylists.isEmpty
                                   ? const Center(
-                                      child: Text("No Playlists Found"))
+                                      child: EmptyState(
+                                          message: 'No Playlists Found'))
                                   : Column(
                                       children: [
                                         const Text(
@@ -82,7 +84,7 @@ class SongListTileTrailing extends StatelessWidget {
                                                             ..showSnackBar(
                                                               const SnackBar(
                                                                 content: Text(
-                                                                    "Song already Exists"),
+                                                                    "Sound already Exists"),
                                                               ),
                                                             );
                                                         }

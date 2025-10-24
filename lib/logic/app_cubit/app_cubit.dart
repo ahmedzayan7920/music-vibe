@@ -16,7 +16,7 @@ class AppCubit extends Cubit<AppState> {
 
   bool get isDarkMode => _isDarkMode;
 
-  _onInitialEvent() {
+  void _onInitialEvent() {
     if (_sharedPreferences.getString("theme") != null) {
       if (_sharedPreferences.getString("theme") == "light") {
         _isDarkMode = false;
@@ -31,13 +31,13 @@ class AppCubit extends Cubit<AppState> {
     }
   }
 
-  onDarkEvent() {
+  void onDarkEvent() {
     _sharedPreferences.setString("theme", "dark");
     _isDarkMode = true;
     emit(AppDarkState());
   }
 
-  onLightEvent() {
+  void onLightEvent() {
     _sharedPreferences.setString("theme", "light");
     _isDarkMode = false;
     emit(AppLightState());

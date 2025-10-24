@@ -22,7 +22,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.music_note_outlined),
-              label: "Songs",
+              label: "Sounds",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.featured_play_list_outlined),

@@ -42,16 +42,29 @@ class _MiniPlayerState extends State<MiniPlayer> {
               ),
               tileColor: Theme.of(context).colorScheme.primary,
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PlayerScreen(
-                      songs: const [],
-                      index: index,
-                      reOpen: true,
-                    ),
+                Navigator.of(context).push(PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      PlayerScreen(
+                    songs: const [],
+                    index: index,
+                    reOpen: true,
                   ),
-                );
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    const begin = Offset(0.0, 1.0);
+                    const end = Offset.zero;
+                    const curve = Curves.easeInOut;
+
+                    final tween = Tween(begin: begin, end: end)
+                        .chain(CurveTween(curve: curve));
+
+                    return SlideTransition(
+                      position: animation.drive(tween),
+                      child: child,
+                    );
+                  },
+                  transitionDuration: const Duration(milliseconds: 300),
+                ));
               },
               leading: ListTileLeading(
                 id: int.parse(sequence[index].tag.id),

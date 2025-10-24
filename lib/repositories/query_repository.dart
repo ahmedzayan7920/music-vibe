@@ -118,7 +118,7 @@ class QueryRepository {
     }
   }
 
-  _getFavoriteIds() {
+  void _getFavoriteIds() {
     favoriteIds = _sharedPreferences
             .getStringList("favorite")
             ?.map(
@@ -130,14 +130,15 @@ class QueryRepository {
 
   Future<Either<Failure, List<String>>> queryAllFolders() async {
     try {
-      _allFolders  = await _audioQuery.queryAllPath();
+      _allFolders = await _audioQuery.queryAllPath();
       return right(_allFolders);
     } catch (error) {
       return left(Failure(message: error.toString()));
     }
   }
 
-  Future<Either<Failure, List<SongModel>>> queryFolderSongs({required String folder}) async {
+  Future<Either<Failure, List<SongModel>>> queryFolderSongs(
+      {required String folder}) async {
     try {
       return right(await _audioQuery.querySongs(path: folder));
     } catch (error) {

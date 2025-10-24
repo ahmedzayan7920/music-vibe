@@ -10,7 +10,7 @@ class SongsCubit extends Cubit<SongsState> {
       : _queryRepository = queryRepository,
         super(SongsInitialState());
 
-  queryAllSongs() async {
+  Future<void> queryAllSongs() async {
     emit(SongsLoadingState());
     if (_queryRepository.allSongs.isEmpty) {
       _querySongs();
@@ -19,12 +19,12 @@ class SongsCubit extends Cubit<SongsState> {
     }
   }
 
-  refreshQueryAllSongs() async {
+  Future<void> refreshQueryAllSongs() async {
     emit(SongsLoadingState());
     _querySongs();
   }
 
-  _querySongs() async {
+  Future<void> _querySongs() async {
     final result = await _queryRepository.queryAllSongs();
     result.fold(
       (failure) {

@@ -10,7 +10,7 @@ class ArtistsCubit extends Cubit<ArtistsState> {
       : _queryRepository = queryRepository,
         super(ArtistsInitialState());
 
-  queryAllArtists() async {
+  Future<void> queryAllArtists() async {
     emit(ArtistsLoadingState());
     if (_queryRepository.allArtists.isEmpty) {
       _queryArtists();
@@ -19,12 +19,12 @@ class ArtistsCubit extends Cubit<ArtistsState> {
     }
   }
 
-  refreshQueryAllArtists() async {
+  Future<void> refreshQueryAllArtists() async {
     emit(ArtistsLoadingState());
     _queryArtists();
   }
 
-  _queryArtists() async {
+  Future<void> _queryArtists() async {
     final result = await _queryRepository.queryAllArtists();
     result.fold(
       (failure) {

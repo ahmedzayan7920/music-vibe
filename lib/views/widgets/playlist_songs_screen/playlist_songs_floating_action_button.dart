@@ -5,6 +5,7 @@ import 'package:music_vibe/views/widgets/common/list_tile_leading.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../core/di/dependency_injection.dart';
+import '../common/empty_state.dart';
 
 class PlaylistSongsFloatingActionButton extends StatelessWidget {
   const PlaylistSongsFloatingActionButton({
@@ -35,11 +36,11 @@ class PlaylistSongsFloatingActionButton extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: allSongs.isEmpty
-                      ? const Center(child: Text("No Sounds Found"))
+                      ? const EmptyState(message: 'No Sounds Found')
                       : Column(
                           children: [
                             const Text(
-                              "sounds",
+                              "Sounds",
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -71,7 +72,7 @@ class PlaylistSongsFloatingActionButton extends StatelessWidget {
                                           ..showSnackBar(
                                             const SnackBar(
                                               content:
-                                                  Text("Song already Exists"),
+                                                  Text("Sound already Exists"),
                                             ),
                                           );
                                       } else {

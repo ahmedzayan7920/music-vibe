@@ -19,7 +19,7 @@ abstract class AppThemes {
       surfaceTint: Colors.deepPurpleAccent,
     ),
     appBarTheme: const AppBarTheme(
-      color: Colors.deepPurple,
+      backgroundColor: Colors.deepPurple,
       foregroundColor: Colors.white,
       shadowColor: Colors.deepPurple,
       surfaceTintColor: Colors.deepPurple,
@@ -45,7 +45,7 @@ abstract class AppThemes {
       surfaceTint: Colors.deepPurpleAccent,
     ),
     appBarTheme: const AppBarTheme(
-      color: Colors.deepPurple,
+      backgroundColor: Colors.deepPurple,
       foregroundColor: Colors.white,
       shadowColor: Colors.deepPurple,
       surfaceTintColor: Colors.deepPurple,

@@ -6,6 +6,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../../core/di/dependency_injection.dart';
 import '../../../logic/favorites_cubit/favorites_cubit.dart';
 import '../../../logic/favorites_cubit/favorites_state.dart';
+import '../common/empty_state.dart';
 import '../common/shuffle_list_tile.dart';
 
 class HomeFavorites extends StatelessWidget {
@@ -24,18 +25,13 @@ class HomeFavorites extends StatelessWidget {
             List<SongModel> allFavoriteSongs = state.allFavoriteSongs;
             if (allFavoriteSongs.isEmpty) {
               return RefreshIndicator(
-              onRefresh: () async {
-                      context.read<FavoritesCubit>().queryFavorites();
-              },
+                onRefresh: () async {
+                  context.read<FavoritesCubit>().queryFavorites();
+                },
                 child: CustomScrollView(
                   slivers: [
                     SliverFillRemaining(
-                      child: Center(
-                        child: Text(
-                          "No Favorites Found",
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ),
+                      child: EmptyState(message: 'No Favorites Found'),
                     ),
                   ],
                 ),

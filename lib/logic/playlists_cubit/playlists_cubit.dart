@@ -15,7 +15,7 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
         _onAudioQuery = onAudioQuery,
         super(PlaylistsInitialState());
 
-  queryAllPlaylists() async {
+  Future<void> queryAllPlaylists() async {
     emit(PlaylistsLoadingState());
     if (_queryRepository.allPlaylists.isEmpty) {
       _queryPlaylists();
@@ -24,12 +24,12 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
     }
   }
 
-  refreshQueryAllPlaylists() async {
+  Future<void> refreshQueryAllPlaylists() async {
     emit(PlaylistsLoadingState());
     _queryPlaylists();
   }
 
-  queryPlaylistSongs({required int id}) async {
+  Future<void> queryPlaylistSongs({required int id}) async {
     emit(PlaylistSongsLoadingState());
     final result = await _queryRepository.queryPlaylistSongs(id: id);
     result.fold(
@@ -42,7 +42,7 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
     );
   }
 
-  addPlayList({required String name}) async {
+  Future<void> addPlayList({required String name}) async {
     emit(PlaylistsLoadingState());
     final success = await _onAudioQuery.createPlaylist(name);
     if (success) {
@@ -52,7 +52,7 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
     }
   }
 
-  removePlayList({required int id}) async {
+  Future<void> removePlayList({required int id}) async {
     emit(PlaylistsLoadingState());
     final success = await _onAudioQuery.removePlaylist(id);
     if (success) {
@@ -62,7 +62,8 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
     }
   }
 
-  addSongToPlayList({required int playlistId, required int songId}) async {
+  Future<void> addSongToPlayList(
+      {required int playlistId, required int songId}) async {
     final success = await _onAudioQuery.addToPlaylist(playlistId, songId);
     if (success) {
       queryPlaylistSongs(id: playlistId);
@@ -70,7 +71,8 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
     }
   }
 
-  removeSongFromPlayList({required int playlistId, required int songId}) async {
+  Future<void> removeSongFromPlayList(
+      {required int playlistId, required int songId}) async {
     final success = await _onAudioQuery.removeFromPlaylist(playlistId, songId);
     if (success) {
       queryPlaylistSongs(id: playlistId);
@@ -78,7 +80,7 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
     }
   }
 
-  _queryPlaylists() async {
+  Future<void> _queryPlaylists() async {
     final result = await _queryRepository.queryAllPlaylists();
     result.fold(
       (failure) {

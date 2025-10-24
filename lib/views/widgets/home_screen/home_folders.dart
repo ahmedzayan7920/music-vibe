@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/di/dependency_injection.dart';
 import '../../../logic/folders_cubit/folders_cubit.dart';
 import '../../../logic/folders_cubit/folders_state.dart';
+import '../common/empty_state.dart';
 import '../common/folder_list_tile.dart';
 
 class HomeFolders extends StatelessWidget {
@@ -20,18 +21,13 @@ class HomeFolders extends StatelessWidget {
             List<String> allFolders = state.allFolders;
             if (allFolders.isEmpty) {
               return RefreshIndicator(
-              onRefresh: () async {
-                context.read<FoldersCubit>().refreshQueryAllFolders();
-              },
+                onRefresh: () async {
+                  context.read<FoldersCubit>().refreshQueryAllFolders();
+                },
                 child: CustomScrollView(
                   slivers: [
                     SliverFillRemaining(
-                      child: Center(
-                        child: Text(
-                          "No Folders Found",
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ),
+                      child: EmptyState(message: 'No Folders Found'),
                     ),
                   ],
                 ),
