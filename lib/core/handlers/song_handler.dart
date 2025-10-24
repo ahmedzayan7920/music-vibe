@@ -69,8 +69,8 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
 
       _audioPlayer.setShuffleModeEnabled(shuffle);
       _audioPlayer.setLoopMode(loop.toLoopMode());
-      _audioPlayer.setAudioSource(
-        ConcatenatingAudioSource(children: sources),
+      _audioPlayer.setAudioSources(
+        sources,
         initialIndex: currentIndex,
         initialPosition: Duration(milliseconds: currentPosition),
       );
@@ -78,10 +78,11 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
   }
 
   void saveAudioState() {
-    final audioSource = _audioPlayer.audioSource;
-    if (audioSource != null && audioSource is ConcatenatingAudioSource) {
+    final audioSources = _audioPlayer.audioSources;
+
+    if (audioSources.isNotEmpty) {
       List<Map<String, dynamic>> sources = [];
-      for (var source in audioSource.children) {
+      for (var source in audioSources) {
         if (source is UriAudioSource) {
           sources.add({
             'uri': source.uri.toString(),
@@ -91,6 +92,7 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
       }
       getIt<SharedPreferences>().setString('audio_source', jsonEncode(sources));
     }
+
     getIt<SharedPreferences>()
         .setInt('audio_position', _audioPlayer.position.inMilliseconds);
     getIt<SharedPreferences>()
@@ -116,11 +118,11 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
       );
     }).toList();
 
-    final playlistSource = ConcatenatingAudioSource(children: sources);
-
-    if (playlist.isNotEmpty) {
-      await _audioPlayer.setAudioSource(playlistSource,
-          initialIndex: startIndex);
+    if (sources.isNotEmpty) {
+      await _audioPlayer.setAudioSources(
+        sources,
+        initialIndex: startIndex,
+      );
       play();
     }
   }
