@@ -1,6 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:music_vibe/views/widgets/common/list_tile_leading.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:on_audio_query_pluse/on_audio_query.dart';
 
 import '../../../core/di/dependency_injection.dart';
 import '../../../logic/playlists_cubit/playlists_cubit.dart';
@@ -25,12 +26,14 @@ class PlaylistListTile extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      trailing: IconButton(
-        onPressed: () {
-          _showDeleteDialog(context);
-        },
-        icon: const Icon(Icons.delete_forever_outlined),
-      ),
+      trailing: Platform.isAndroid
+          ? IconButton(
+              onPressed: () {
+                _showDeleteDialog(context);
+              },
+              icon: const Icon(Icons.delete_forever_outlined),
+            )
+          : null,
       leading: ListTileLeading(
         id: playlist.id,
         type: ArtworkType.PLAYLIST,

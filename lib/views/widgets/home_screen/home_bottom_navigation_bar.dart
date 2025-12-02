@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_vibe/logic/bottom_navigation_cubit/bottom_navigation_cubit.dart';
@@ -19,28 +20,29 @@ class HomeBottomNavigationBar extends StatelessWidget {
       builder: (context, state) {
         return BottomNavigationBar(
           fixedColor: Theme.of(context).colorScheme.primary,
-          items: const [
-            BottomNavigationBarItem(
+          items: [
+            const BottomNavigationBarItem(
               icon: Icon(Icons.music_note_outlined),
               label: "Sounds",
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.featured_play_list_outlined),
               label: "Playlists",
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.album_outlined),
               label: "Albums",
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.person_2_outlined),
               label: "Artists",
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.folder_outlined),
-              label: "Folders",
-            ),
-            BottomNavigationBarItem(
+            if (Platform.isAndroid)
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.folder_outlined),
+                label: "Folders",
+              ),
+            const BottomNavigationBarItem(
               icon: Icon(Icons.favorite_border_outlined),
               label: "Favorites",
             ),

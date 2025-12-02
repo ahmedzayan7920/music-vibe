@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_vibe/logic/app_cubit/app_cubit.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:on_audio_query_pluse/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/di/dependency_injection.dart';

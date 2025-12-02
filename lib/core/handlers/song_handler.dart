@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_vibe/core/di/dependency_injection.dart';
 import 'package:music_vibe/core/extensions/extensions.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:on_audio_query_pluse/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<MyAudioHandler> initAudioService() async {

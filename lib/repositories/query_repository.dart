@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:on_audio_query_pluse/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/failure/failure.dart';

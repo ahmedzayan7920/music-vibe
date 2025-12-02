@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_vibe/core/di/dependency_injection.dart';
 import 'package:music_vibe/repositories/query_repository.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:on_audio_query_pluse/on_audio_query.dart';
 
 import '../widgets/common/empty_state.dart';
 import '../widgets/common/shuffle_list_tile.dart';

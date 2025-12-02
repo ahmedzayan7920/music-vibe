@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_vibe/views/widgets/common/song_list_tile_trailing.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:on_audio_query_pluse/on_audio_query.dart';
 
 import '../../screens/player_screen.dart';
 import 'list_tile_leading.dart';

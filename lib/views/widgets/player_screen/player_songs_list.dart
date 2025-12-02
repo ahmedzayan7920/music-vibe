@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_vibe/views/widgets/common/list_tile_leading.dart';
 import 'package:music_vibe/views/widgets/common/song_list_tile_trailing.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:on_audio_query_pluse/on_audio_query.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../core/di/dependency_injection.dart';

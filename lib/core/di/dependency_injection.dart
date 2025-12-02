@@ -4,7 +4,7 @@ import 'package:music_vibe/logic/albums_cubit/albums_cubit.dart';
 import 'package:music_vibe/logic/favorites_cubit/favorites_cubit.dart';
 import 'package:music_vibe/logic/playlists_cubit/playlists_cubit.dart';
 import 'package:music_vibe/logic/songs_cubit/songs_cubit.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:on_audio_query_pluse/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../logic/artists_cubit/artists_cubit.dart';

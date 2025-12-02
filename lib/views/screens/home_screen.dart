@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_vibe/views/widgets/home_screen/home_albums.dart';
@@ -55,12 +56,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     .read<BottomNavigationCubit>()
                     .setCurrentBottomNavigationIndex(index);
               },
-              children: const [
+              children: [
                 HomeSongs(),
                 HomePlaylists(),
                 HomeAlbums(),
                 HomeArtists(),
-                HomeFolders(),
+                if (Platform.isAndroid) HomeFolders(),
                 HomeFavorites(),
               ],
             ),
