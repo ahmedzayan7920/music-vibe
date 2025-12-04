@@ -4,6 +4,7 @@ import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'home_screen.dart';
 
@@ -138,7 +139,9 @@ class _PermissionsScreenState extends State<PermissionsScreen>
         data: 'package:$packageName',
       );
       await intent.launch();
-      _comeFromSettings = true;
+    } else if (Platform.isIOS) {
+      await openAppSettings();
     }
+    _comeFromSettings = true;
   }
 }
