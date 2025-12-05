@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,6 +44,13 @@ class QueryRepository {
 
   Future<Either<Failure, List<PlaylistModel>>> queryAllPlaylists() async {
     try {
+      // On iOS, the on_audio_query plugin can crash when there are no playlists
+      // or when the Music library is empty (common on simulators).
+      // We skip the native query on iOS to prevent the app from crashing.
+      if (Platform.isIOS) {
+        _allPlaylists = [];
+        return right(_allPlaylists);
+      }
       _allPlaylists = await _audioQuery.queryPlaylists();
       return right(_allPlaylists);
     } catch (error) {
@@ -71,6 +80,10 @@ class QueryRepository {
     required int id,
   }) async {
     try {
+      // On iOS, playlists are disabled due to plugin crash issues
+      if (Platform.isIOS) {
+        return right(<SongModel>[]);
+      }
       final playlistSongs = await _audioQuery.queryAudiosFrom(
         AudiosFromType.PLAYLIST,
         id,
@@ -130,6 +143,11 @@ class QueryRepository {
 
   Future<Either<Failure, List<String>>> queryAllFolders() async {
     try {
+      // Folders are not supported on iOS due to plugin limitations
+      if (Platform.isIOS) {
+        _allFolders = [];
+        return right(_allFolders);
+      }
       _allFolders = await _audioQuery.queryAllPath();
       return right(_allFolders);
     } catch (error) {
@@ -140,6 +158,10 @@ class QueryRepository {
   Future<Either<Failure, List<SongModel>>> queryFolderSongs(
       {required String folder}) async {
     try {
+      // Folders are not supported on iOS due to plugin limitations
+      if (Platform.isIOS) {
+        return right(<SongModel>[]);
+      }
       return right(await _audioQuery.querySongs(path: folder));
     } catch (error) {
       return left(Failure(message: error.toString()));

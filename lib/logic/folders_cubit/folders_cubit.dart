@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_vibe/repositories/query_repository.dart';
 
@@ -11,6 +13,11 @@ class FoldersCubit extends Cubit<FoldersState> {
         super(FoldersInitialState());
 
   Future<void> queryAllFolders() async {
+    // Folders are not supported on iOS due to plugin limitations
+    if (Platform.isIOS) {
+      emit(FoldersSuccessState(allFolders: []));
+      return;
+    }
     emit(FoldersLoadingState());
     if (_queryRepository.allFolders.isEmpty) {
       _queryFolders();
@@ -20,6 +27,11 @@ class FoldersCubit extends Cubit<FoldersState> {
   }
 
   Future<void> refreshQueryAllFolders() async {
+    // Folders are not supported on iOS due to plugin limitations
+    if (Platform.isIOS) {
+      emit(FoldersSuccessState(allFolders: []));
+      return;
+    }
     emit(FoldersLoadingState());
     _queryFolders();
   }

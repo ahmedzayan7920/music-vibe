@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               children: [
                 HomeSongs(),
-                HomePlaylists(),
+                if (Platform.isAndroid) HomePlaylists(),
                 HomeAlbums(),
                 HomeArtists(),
                 if (Platform.isAndroid) HomeFolders(),
@@ -73,10 +73,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 HomeBottomNavigationBar(pageController: _pageController),
               ],
             ),
-            floatingActionButton: context
-                        .read<BottomNavigationCubit>()
-                        .currentBottomNavigationIndex ==
-                    1
+            // Floating action button for adding playlists (Android only)
+            floatingActionButton: Platform.isAndroid &&
+                    context
+                            .read<BottomNavigationCubit>()
+                            .currentBottomNavigationIndex ==
+                        1
                 ? const HomeFloatingActionButton()
                 : null,
           );

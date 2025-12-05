@@ -25,10 +25,11 @@ class HomeBottomNavigationBar extends StatelessWidget {
               icon: Icon(Icons.music_note_outlined),
               label: "Sounds",
             ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.featured_play_list_outlined),
-              label: "Playlists",
-            ),
+            if (Platform.isAndroid)
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.featured_play_list_outlined),
+                label: "Playlists",
+              ),
             const BottomNavigationBarItem(
               icon: Icon(Icons.album_outlined),
               label: "Albums",

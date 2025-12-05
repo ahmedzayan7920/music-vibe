@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 
@@ -43,6 +45,11 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
   }
 
   Future<void> addPlayList({required String name}) async {
+    // Playlist operations are not supported on iOS due to plugin limitations
+    if (Platform.isIOS) {
+      emit(PlaylistsSuccessState(allPlaylists: _queryRepository.allPlaylists));
+      return;
+    }
     emit(PlaylistsLoadingState());
     final success = await _onAudioQuery.createPlaylist(name);
     if (success) {
@@ -53,6 +60,11 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
   }
 
   Future<void> removePlayList({required int id}) async {
+    // Playlist operations are not supported on iOS due to plugin limitations
+    if (Platform.isIOS) {
+      emit(PlaylistsSuccessState(allPlaylists: _queryRepository.allPlaylists));
+      return;
+    }
     emit(PlaylistsLoadingState());
     final success = await _onAudioQuery.removePlaylist(id);
     if (success) {
@@ -64,6 +76,8 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
 
   Future<void> addSongToPlayList(
       {required int playlistId, required int songId}) async {
+    // Playlist operations are not supported on iOS due to plugin limitations
+    if (Platform.isIOS) return;
     final success = await _onAudioQuery.addToPlaylist(playlistId, songId);
     if (success) {
       queryPlaylistSongs(id: playlistId);
@@ -73,6 +87,8 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
 
   Future<void> removeSongFromPlayList(
       {required int playlistId, required int songId}) async {
+    // Playlist operations are not supported on iOS due to plugin limitations
+    if (Platform.isIOS) return;
     final success = await _onAudioQuery.removeFromPlaylist(playlistId, songId);
     if (success) {
       queryPlaylistSongs(id: playlistId);

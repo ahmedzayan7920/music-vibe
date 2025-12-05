@@ -25,11 +25,6 @@ dependencies:
   lottie: ^3.3.1
   permission_handler: ^12.0.1
 
-dependency_overrides:
-  on_audio_query_ios:
-    path: ./local_plugins/on_audio_query_ios
-  # on_audio_query_android:
-  #   path: ./local_plugins/on_audio_query_android
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.3
