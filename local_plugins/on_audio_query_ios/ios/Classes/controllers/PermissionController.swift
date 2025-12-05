@@ -15,11 +15,15 @@ class PermissionController {
         Log.type.debug("iOS Version: \(ProcessInfo().operatingSystemVersion.majorVersion)")
         
         var isPermissionGranted: Bool = false
+        let semaphore = DispatchSemaphore(value: 0)
+        
         MPMediaLibrary.requestAuthorization { status in
             isPermissionGranted = status == .authorized
             Log.type.debug("Permission accepted: \(isPermissionGranted)")
+            semaphore.signal()
         }
         
+        semaphore.wait()
         return isPermissionGranted
     }
 }

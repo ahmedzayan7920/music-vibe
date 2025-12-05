@@ -7,8 +7,8 @@ public func loadSongItem(song: MPMediaItem) -> [String: Any?] {
     let sizeInBytes = song.value(forProperty: "fileSize") as? Int
     let songData: [String: Any?] = [
         "_id": song.persistentID,
-        "_data": song.assetURL?.absoluteString,
-        "_uri": song.assetURL?.absoluteString,
+        "_data": song.assetURL?.absoluteString ?? "",
+        "_uri": song.assetURL?.absoluteString ?? "",
         "_display_name": "\(song.artist ?? "") - \(song.title ?? "").\(fileExt)",
         "_display_name_wo_ext": "\(song.artist ?? "") - \(song.title ?? "")",
         "_size": sizeInBytes,
@@ -70,9 +70,9 @@ public func formatSongList(args: [String: Any], allSongs: [[String: Any?]]) -> [
 func loadAlbumItem(album: MPMediaItemCollection) -> [String: Any?] {
     let albumData: [String: Any?] = [
         "numsongs": album.count,
-        "artist": album.items[0].albumArtist,
+        "artist": album.items[0].albumArtist ?? "",
         "_id": album.persistentID,
-        "album": album.items[0].albumTitle,
+        "album": album.items[0].albumTitle ?? "",
         "artist_id": album.items[0].artistPersistentID,
         "album_id": album.items[0].albumPersistentID
     ]

@@ -21,11 +21,11 @@ class AudioQuery {
         cursor.groupingType = checkSongSortType(sortType: sortType)
         
         // Filter to avoid audios/songs from cloud library.
-        let cloudFilter = MPMediaPropertyPredicate(
-            value: false,
-            forProperty: MPMediaItemPropertyIsCloudItem
-        )
-        cursor.addFilterPredicate(cloudFilter)
+        // let cloudFilter = MPMediaPropertyPredicate(
+        //     value: false,
+        //     forProperty: MPMediaItemPropertyIsCloudItem
+        // )
+        // cursor.addFilterPredicate(cloudFilter)
         
         Log.type.debug("Query config: ")
         Log.type.debug("\tsortType: \(sortType)")
@@ -41,12 +41,13 @@ class AudioQuery {
             // For each item(song) inside this "cursor", take one and "format"
             // into a [Map<String, dynamic>], all keys are based on [Android]
             // platforms.
+            Log.type.debug("Found \(cursor.items?.count ?? 0) songs in query")
             for song in cursor.items! {
                 // Ignore cloud items.
-                if !song.isCloudItem, song.assetURL != nil {
+                // if !song.isCloudItem, song.assetURL != nil {
                     let songData = loadSongItem(song: song)
                     listOfSongs.append(songData)
-                }
+                // }
             }
             
             DispatchQueue.main.async {
