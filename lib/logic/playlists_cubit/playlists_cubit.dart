@@ -31,15 +31,15 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
     _queryPlaylists();
   }
 
-  Future<void> queryPlaylistSongs({required int id}) async {
-    emit(PlaylistSongsLoadingState());
-    final result = await _queryRepository.queryPlaylistSongs(id: id);
+  Future<void> queryPlaylistTracks({required int id}) async {
+    emit(PlaylistTracksLoadingState());
+    final result = await _queryRepository.queryPlaylistTracks(id: id);
     result.fold(
       (failure) {
-        emit(PlaylistSongsFailureState(message: failure.message));
+        emit(PlaylistTracksFailureState(message: failure.message));
       },
-      (songs) {
-        emit(PlaylistSongsSuccessState(allSongs: songs));
+      (tracks) {
+        emit(PlaylistTracksSuccessState(allTracks: tracks));
       },
     );
   }
@@ -74,24 +74,24 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
     }
   }
 
-  Future<void> addSongToPlayList(
-      {required int playlistId, required int songId}) async {
+  Future<void> addTrackToPlayList(
+      {required int playlistId, required int trackId}) async {
     // Playlist operations are not supported on iOS due to plugin limitations
     if (Platform.isIOS) return;
-    final success = await _onAudioQuery.addToPlaylist(playlistId, songId);
+    final success = await _onAudioQuery.addToPlaylist(playlistId, trackId);
     if (success) {
-      queryPlaylistSongs(id: playlistId);
+      queryPlaylistTracks(id: playlistId);
       _queryPlaylists();
     }
   }
 
-  Future<void> removeSongFromPlayList(
-      {required int playlistId, required int songId}) async {
+  Future<void> removeTrackFromPlayList(
+      {required int playlistId, required int trackId}) async {
     // Playlist operations are not supported on iOS due to plugin limitations
     if (Platform.isIOS) return;
-    final success = await _onAudioQuery.removeFromPlaylist(playlistId, songId);
+    final success = await _onAudioQuery.removeFromPlaylist(playlistId, trackId);
     if (success) {
-      queryPlaylistSongs(id: playlistId);
+      queryPlaylistTracks(id: playlistId);
       _queryPlaylists();
     }
   }

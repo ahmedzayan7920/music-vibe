@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 
-import '../../screens/songs_screen.dart';
+import '../../screens/tracks_screen.dart';
 
 class FolderListTile extends StatelessWidget {
   const FolderListTile({super.key, required this.folder});
@@ -13,7 +13,7 @@ class FolderListTile extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SongsScreen(
+            builder: (context) => TracksScreen(
               title: folder,
               type: AudiosFromType.GENRE,
             ),

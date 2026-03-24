@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_vibe/repositories/query_repository.dart';
 import 'package:music_vibe/views/widgets/common/shuffle_list_tile.dart';
-import 'package:music_vibe/views/widgets/common/song_list_tile.dart';
+import 'package:music_vibe/views/widgets/common/track_list_tile.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 
 import '../../core/di/dependency_injection.dart';
@@ -17,7 +17,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  List<SongModel> allSongs = getIt<QueryRepository>().allSongs;
+  List<SongModel> allTracks = getIt<QueryRepository>().allTracks;
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +27,19 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
       body: Column(
         children: [
-          SearchFormField(onChanged: getSearchSongs),
-          allSongs.isEmpty
-              ? const Expanded(child: EmptyState(message: 'No Sounds Found'))
+          SearchFormField(onChanged: getSearchTracks),
+          allTracks.isEmpty
+              ? const Expanded(child: EmptyState(message: 'No Tracks Found'))
               : Expanded(
                   child: Column(
                     children: [
-                      ShuffleListTile(songs: allSongs),
+                      ShuffleListTile(tracks: allTracks),
                       Expanded(
                         child: ListView.builder(
-                          itemCount: allSongs.length,
+                          itemCount: allTracks.length,
                           itemBuilder: (context, index) {
-                            return SongListTile(
-                                allSongs: allSongs, song: allSongs[index]);
+                            return TrackListTile(
+                                allTracks: allTracks, track: allTracks[index]);
                           },
                         ),
                       ),
@@ -52,9 +52,9 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  void getSearchSongs(String query) {
-    allSongs = getIt<QueryRepository>()
-        .allSongs
+  void getSearchTracks(String query) {
+    allTracks = getIt<QueryRepository>()
+        .allTracks
         .where((e) => e.title.toLowerCase().contains(query.toLowerCase()))
         .toList();
     setState(() {});

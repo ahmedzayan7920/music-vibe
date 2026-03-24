@@ -16,7 +16,7 @@ class SearchFormField extends StatelessWidget {
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.search,
               color: Theme.of(context).colorScheme.onSurface),
-          hintText: 'Search for songs...',
+          hintText: 'Search for tracks...',
           hintStyle: TextStyle(
               color: Theme.of(context)
                   .colorScheme

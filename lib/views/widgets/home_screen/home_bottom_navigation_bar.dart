@@ -22,8 +22,8 @@ class HomeBottomNavigationBar extends StatelessWidget {
           fixedColor: Theme.of(context).colorScheme.primary,
           items: [
             const BottomNavigationBarItem(
-              icon: Icon(Icons.music_note_outlined),
-              label: "Sounds",
+              icon: Icon(Icons.graphic_eq),
+              label: "Tracks",
             ),
             if (Platform.isAndroid)
               const BottomNavigationBarItem(
@@ -31,12 +31,12 @@ class HomeBottomNavigationBar extends StatelessWidget {
                 label: "Playlists",
               ),
             const BottomNavigationBarItem(
-              icon: Icon(Icons.album_outlined),
-              label: "Albums",
+              icon: Icon(Icons.collections_bookmark_outlined),
+              label: "Collections",
             ),
             const BottomNavigationBarItem(
-              icon: Icon(Icons.person_2_outlined),
-              label: "Artists",
+              icon: Icon(Icons.record_voice_over_outlined),
+              label: "Creators",
             ),
             if (Platform.isAndroid)
               const BottomNavigationBarItem(

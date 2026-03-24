@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 
 import '../../../core/di/dependency_injection.dart';
-import '../../../core/handlers/song_handler.dart';
+import '../../../core/handlers/track_handler.dart';
 import '../../screens/player_screen.dart';
 
 class ShuffleListTile extends StatelessWidget {
   const ShuffleListTile({
     super.key,
-    required this.songs,
+    required this.tracks,
   });
-  final List<SongModel> songs;
+  final List<SongModel> tracks;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class ShuffleListTile extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => PlayerScreen(
-            songs: songs, index: Random.secure().nextInt(songs.length)),
+            songs: tracks, index: Random.secure().nextInt(tracks.length)),
       ),
     );
   }

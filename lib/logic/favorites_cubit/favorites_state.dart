@@ -8,7 +8,7 @@ final class FavoritesInitialState extends FavoritesState {}
 
 
 final class FavoritesSuccessState extends FavoritesState {
-  final List<SongModel> allFavoriteSongs;
+  final List<SongModel> allFavoriteTracks;
 
-  FavoritesSuccessState({required this.allFavoriteSongs});
+  FavoritesSuccessState({required this.allFavoriteTracks});
 }

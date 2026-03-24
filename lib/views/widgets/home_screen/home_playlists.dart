@@ -5,7 +5,7 @@ import 'package:on_audio_query_pluse/on_audio_query.dart';
 
 import '../../../logic/playlists_cubit/playlists_cubit.dart';
 import '../../../logic/playlists_cubit/playlists_state.dart';
-import '../../screens/playlist_songs_screen.dart';
+import '../../screens/playlist_tracks_screen.dart';
 import '../common/empty_state.dart';
 import '../common/playlist_list_tile.dart';
 
@@ -53,7 +53,7 @@ class HomePlaylists extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PlaylistSongsScreen(
+                          builder: (context) => PlaylistTracksScreen(
                             playlistId: allPlaylists[index].id,
                             playlistName: allPlaylists[index].playlist,
                           ),

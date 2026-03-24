@@ -4,7 +4,7 @@ import 'package:music_vibe/views/widgets/common/list_tile_leading.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 
 import '../../core/di/dependency_injection.dart';
-import '../../core/handlers/song_handler.dart';
+import '../../core/handlers/track_handler.dart';
 import '../screens/player_screen.dart';
 import 'player_screen/play_pause_button.dart';
 
@@ -69,7 +69,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
               leading: ListTileLeading(
                 id: int.parse(sequence[index].tag.id),
                 type: ArtworkType.AUDIO,
-                placeholderIcon: Icons.music_note_outlined,
+                placeholderIcon: Icons.graphic_eq,
               ),
               title: Text(
                 sequence[index].tag.title,

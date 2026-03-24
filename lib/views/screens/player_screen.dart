@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:music_vibe/core/di/dependency_injection.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 
-import '../../core/handlers/song_handler.dart';
-import '../widgets/player_screen/player_songs_list.dart';
+import '../../core/handlers/track_handler.dart';
+import '../widgets/player_screen/player_tracks_list.dart';
 import '../widgets/player_screen/action_buttons.dart';
 import '../widgets/player_screen/time_section.dart';
 
@@ -42,7 +42,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
           child: Column(
             children: [
               Expanded(
-                child: PlayerSongsList(),
+                child: PlayerTracksList(),
               ),
               TimeSection(),
               ActionButtons(),

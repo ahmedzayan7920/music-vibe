@@ -1,14 +1,15 @@
 import 'package:get_it/get_it.dart';
-import 'package:music_vibe/core/handlers/song_handler.dart';
-import 'package:music_vibe/logic/albums_cubit/albums_cubit.dart';
+import 'package:music_vibe/core/handlers/track_handler.dart';
+import 'package:music_vibe/logic/collections_cubit/collections_cubit.dart';
 import 'package:music_vibe/logic/favorites_cubit/favorites_cubit.dart';
-import 'package:music_vibe/logic/playlists_cubit/playlists_cubit.dart';
-import 'package:music_vibe/logic/songs_cubit/songs_cubit.dart';
+import 'package:music_vibe/logic/creators_cubit/creators_cubit.dart';
+import 'package:music_vibe/logic/tracks_cubit/tracks_cubit.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../logic/artists_cubit/artists_cubit.dart';
+
 import '../../logic/folders_cubit/folders_cubit.dart';
+import '../../logic/playlists_cubit/playlists_cubit.dart';
 import '../../repositories/query_repository.dart';
 
 var getIt = GetIt.instance;
@@ -23,14 +24,14 @@ Future<void> initDependencyInjection() async {
       audioQuery: getIt<OnAudioQuery>(),
       sharedPreferences: getIt<SharedPreferences>(),
     )
-      ..queryAllSongs()
+      ..queryAllTracks()
       ..queryAllPlaylists()
-      ..queryAllAlbums()
-      ..queryAllArtists()
-      ..queryFavoriteSongs(),
+      ..queryAllCollections()
+      ..queryAllCreators()
+      ..queryFavoriteTracks(),
   );
-  getIt.registerLazySingleton<SongsCubit>(
-    () => SongsCubit(
+  getIt.registerLazySingleton<TracksCubit>(
+    () => TracksCubit(
       queryRepository: getIt<QueryRepository>(),
     ),
   );
@@ -40,13 +41,13 @@ Future<void> initDependencyInjection() async {
       onAudioQuery: getIt<OnAudioQuery>(),
     ),
   );
-  getIt.registerLazySingleton<AlbumsCubit>(
-    () => AlbumsCubit(
+  getIt.registerLazySingleton<CollectionsCubit>(
+    () => CollectionsCubit(
       queryRepository: getIt<QueryRepository>(),
     ),
   );
-  getIt.registerLazySingleton<ArtistsCubit>(
-    () => ArtistsCubit(
+  getIt.registerLazySingleton<CreatorsCubit>(
+    () => CreatorsCubit(
       queryRepository: getIt<QueryRepository>(),
     ),
   );
