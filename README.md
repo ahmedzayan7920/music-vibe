@@ -2,9 +2,9 @@
 <html lang="en">
 <body>
 
-<h1>Music Vibe</h1>
+<h1>Vibe Audio Player</h1>
 
-<p><strong>Music Vibe</strong> is a Flutter-based music player application designed to offer a seamless and engaging music listening experience. With features like background playback, custom media button actions, and personalized song management, Music Vibe enhances your music enjoyment on mobile devices.</p>
+<p><strong>Vibe Audio Player</strong> is a Flutter-based music player application designed to offer a seamless and engaging music listening experience. With features like background playback, custom media button actions, and personalized song management, Vibe Audio Player enhances your music enjoyment on mobile devices.</p>
 
 <h2>Features</h2>
 <ul>

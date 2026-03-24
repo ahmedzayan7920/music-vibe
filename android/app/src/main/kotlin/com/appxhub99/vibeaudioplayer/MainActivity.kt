@@ -1,4 +1,4 @@
-package com.appxhub.vibeaudioplayer
+package com.appxhub99.vibeaudioplayer
 
 import io.flutter.embedding.android.FlutterActivity
 
