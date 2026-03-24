@@ -18,22 +18,44 @@ class TracksScreen extends StatefulWidget {
 }
 
 class _TracksScreenState extends State<TracksScreen> {
-  late List<SongModel> tracks;
+  List<SongModel> tracks = [];
+  bool isLoading = true;
 
   @override
   void initState() {
-    tracks = getIt<QueryRepository>().allTracks.where(
-      (song) {
-        if (widget.type == AudiosFromType.ALBUM) {
-          return song.album == widget.title;
-        } else if (widget.type == AudiosFromType.GENRE) {
-          return song.data.contains(widget.title);
-        } else {
-          return song.artist == widget.title;
-        }
-      },
-    ).toList();
     super.initState();
+    _loadTracks();
+  }
+
+  Future<void> _loadTracks() async {
+    if (widget.type == AudiosFromType.GENRE) {
+      // Type GENRE was repurposed for Folders in this app's navigation
+      final result = await getIt<QueryRepository>()
+          .queryFolderSongs(folder: widget.title);
+      result.fold(
+        (failure) => setState(() {
+          tracks = [];
+          isLoading = false;
+        }),
+        (songs) => setState(() {
+          tracks = songs;
+          isLoading = false;
+        }),
+      );
+    } else {
+      setState(() {
+        tracks = getIt<QueryRepository>().allTracks.where(
+          (song) {
+            if (widget.type == AudiosFromType.ALBUM) {
+              return song.album == widget.title;
+            } else {
+              return song.artist?.contains(widget.title) ?? false;
+            }
+          },
+        ).toList();
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -42,23 +64,26 @@ class _TracksScreenState extends State<TracksScreen> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: (tracks.isEmpty)
-          ? const EmptyState(message: 'No Sounds Found')
-          : Column(
-              children: [
-                tracks.isEmpty
-                    ? const SizedBox()
-                    : ShuffleListTile(tracks: tracks),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: tracks.length,
-                    itemBuilder: (context, index) {
-                      return TrackListTile(allTracks: tracks, track: tracks[index]);
-                    },
-                  ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : (tracks.isEmpty)
+              ? const EmptyState(message: 'No Sounds Found')
+              : Column(
+                  children: [
+                    tracks.isEmpty
+                        ? const SizedBox()
+                        : ShuffleListTile(tracks: tracks),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: tracks.length,
+                        itemBuilder: (context, index) {
+                          return TrackListTile(
+                              allTracks: tracks, track: tracks[index]);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
     );
   }
 }

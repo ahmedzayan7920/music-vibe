@@ -23,12 +23,7 @@ Future<void> initDependencyInjection() async {
     () => QueryRepository(
       audioQuery: getIt<OnAudioQuery>(),
       sharedPreferences: getIt<SharedPreferences>(),
-    )
-      ..queryAllTracks()
-      ..queryAllPlaylists()
-      ..queryAllCollections()
-      ..queryAllCreators()
-      ..queryFavoriteTracks(),
+    ),
   );
   getIt.registerLazySingleton<TracksCubit>(
     () => TracksCubit(

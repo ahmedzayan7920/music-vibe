@@ -11,13 +11,17 @@ import '../widgets/search_screen/search_form_field.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
-
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
-
 class _SearchScreenState extends State<SearchScreen> {
-  List<SongModel> allTracks = getIt<QueryRepository>().allTracks;
+  List<SongModel> allTracks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    allTracks = getIt<QueryRepository>().allTracks;
+  }
 
   @override
   Widget build(BuildContext context) {

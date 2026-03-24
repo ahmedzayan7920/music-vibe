@@ -27,10 +27,7 @@
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>NSAppTransportSecurity</key>
-		<dict>
-			<key>NSAllowsArbitraryLoads</key>
-			<true/>
-		</dict>
+		<dict/>
 		<key>NSAppleMusicUsageDescription</key>
 		<string>This app needs access to your media library to list and play local audio files.</string>
 		<key>NSMicrophoneUsageDescription</key>

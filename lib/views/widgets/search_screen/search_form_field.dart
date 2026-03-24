@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SearchFormField extends StatelessWidget {
+class SearchFormField extends StatefulWidget {
   const SearchFormField({
     super.key,
     required this.onChanged,
@@ -8,11 +8,31 @@ class SearchFormField extends StatelessWidget {
   final void Function(String)? onChanged;
 
   @override
+  State<SearchFormField> createState() => _SearchFormFieldState();
+}
+
+class _SearchFormFieldState extends State<SearchFormField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: TextFormField(
-        onChanged: onChanged,
+        controller: _controller,
+        onChanged: widget.onChanged,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.search,
               color: Theme.of(context).colorScheme.onSurface),

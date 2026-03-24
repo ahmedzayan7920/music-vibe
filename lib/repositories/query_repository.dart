@@ -91,12 +91,17 @@ class QueryRepository {
       List<SongModel> playlistTracks =
           await _audioQuery.queryAudiosFrom(AudiosFromType.PLAYLIST, id);
       List<SongModel> matchedTracks = [];
+      Set<int> addedTrackIds = {};
       _allPlaylistsTracks.remove(id);
+      
       for (var playlistTrack in playlistTracks) {
         for (var track in allTracks) {
           if (playlistTrack.title == track.title &&
-              playlistTrack.duration == track.duration) {
+              playlistTrack.duration == track.duration &&
+              !addedTrackIds.contains(track.id)) {
             matchedTracks.add(track);
+            addedTrackIds.add(track.id);
+            break; // Stop searching once we find a match for this playlist track
           }
         }
       }
@@ -113,15 +118,15 @@ class QueryRepository {
     return allFavoriteTracks;
   }
 
-  List<SongModel> toggleFavorite({required int id}) {
+  Future<List<SongModel>> toggleFavorite({required int id}) async {
     if (favoriteIds.contains(id)) {
       favoriteIds.remove(id);
-      _sharedPreferences.setStringList(
+      await _sharedPreferences.setStringList(
           "favorite", favoriteIds.map((e) => e.toString()).toList());
       return queryFavoriteTracks();
     } else {
       favoriteIds.add(id);
-      _sharedPreferences.setStringList(
+      await _sharedPreferences.setStringList(
           "favorite", favoriteIds.map((e) => e.toString()).toList());
       return queryFavoriteTracks();
     }

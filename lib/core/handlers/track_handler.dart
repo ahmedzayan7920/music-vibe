@@ -13,7 +13,7 @@ Future<MyAudioHandler> initAudioService() async {
   return await AudioService.init<MyAudioHandler>(
       builder: () => MyAudioHandler(),
       config: AudioServiceConfig(
-        androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+        androidNotificationChannelId: 'com.zayan.music_vibe.channel.audio',
         androidNotificationChannelName: 'Audio playback',
         androidShowNotificationBadge: true,
         androidStopForegroundOnPause: true,
@@ -42,38 +42,52 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
 
     // Listen to the playerStateStream and save the audio state
     _audioPlayer.playerStateStream.listen((event) {
-      if (event.processingState == ProcessingState.idle ||
-          event.playing == false) {
+      if (event.playing == false &&
+          event.processingState != ProcessingState.idle &&
+          _audioPlayer.audioSources.isNotEmpty) {
         saveAudioState();
       }
     });
   }
 
   Future<void> restoreAudioState() async {
-    int currentPosition =
-        getIt<SharedPreferences>().getInt('audio_position') ?? 0;
-    int currentIndex = getIt<SharedPreferences>().getInt('current_index') ?? 0;
-    bool shuffle = getIt<SharedPreferences>().getBool('shuffle') ?? false;
-    String loop = getIt<SharedPreferences>().getString('loop') ?? "";
-    String? savedSources = getIt<SharedPreferences>().getString('audio_source');
+    try {
+      final currentPosition =
+          getIt<SharedPreferences>().getInt('audio_position') ?? 0;
+      final currentIndex =
+          getIt<SharedPreferences>().getInt('current_index') ?? 0;
+      final shuffle =
+          getIt<SharedPreferences>().getBool('shuffle') ?? false;
+      final loop = getIt<SharedPreferences>().getString('loop') ?? "";
+      final savedSources =
+          getIt<SharedPreferences>().getString('audio_source');
 
-    if (savedSources != null) {
-      List<dynamic> sourceList = jsonDecode(savedSources);
-      List<UriAudioSource> sources = sourceList.map((source) {
-        final sourceMap = source as Map<String, dynamic>;
-        return AudioSource.uri(
-          Uri.parse(sourceMap['uri'] as String),
-          tag: (sourceMap['tag'] as Map<String, dynamic>).fromJson(),
-        );
-      }).toList();
+      if (savedSources != null && savedSources.isNotEmpty) {
+        final List<dynamic> sourceList = jsonDecode(savedSources);
+        final List<UriAudioSource> sources = sourceList
+            .where((source) =>
+                source is Map<String, dynamic> &&
+                source['uri'] != null)
+            .map((source) {
+          final sourceMap = source as Map<String, dynamic>;
+          return AudioSource.uri(
+            Uri.parse(sourceMap['uri'] as String),
+            tag: (sourceMap['tag'] as Map<String, dynamic>).fromJson(),
+          );
+        }).toList();
 
-      _audioPlayer.setShuffleModeEnabled(shuffle);
-      _audioPlayer.setLoopMode(loop.toLoopMode());
-      _audioPlayer.setAudioSources(
-        sources,
-        initialIndex: currentIndex,
-        initialPosition: Duration(milliseconds: currentPosition),
-      );
+        if (sources.isNotEmpty) {
+          await _audioPlayer.setShuffleModeEnabled(shuffle);
+          await _audioPlayer.setLoopMode(loop.toLoopMode());
+          await _audioPlayer.setAudioSources(
+            sources,
+            initialIndex: currentIndex.clamp(0, sources.length - 1),
+            initialPosition: Duration(milliseconds: currentPosition),
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint('Failed to restore audio state: $e');
     }
   }
 
@@ -104,7 +118,9 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
   }
 
   Future<void> setupPlaylist(List<SongModel> playlist, int startIndex) async {
-    final sources = playlist.map((song) {
+    final sources = playlist
+        .where((song) => song.uri != null)
+        .map((song) {
       return AudioSource.uri(
         Uri.parse(song.uri!),
         tag: MediaItem(
@@ -119,9 +135,10 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
     }).toList();
 
     if (sources.isNotEmpty) {
+      final safeIndex = startIndex.clamp(0, sources.length - 1);
       await _audioPlayer.setAudioSources(
         sources,
-        initialIndex: startIndex,
+        initialIndex: safeIndex,
       );
       play();
     }
@@ -150,9 +167,8 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
       _audioPlayer.seekToPrevious().then((_) => _audioPlayer.play());
 
   @override
-  Future<void> seek(Duration position, {int? index}) => _audioPlayer
-      .seek(position, index: index)
-      .then((_) => _audioPlayer.play());
+  Future<void> seek(Duration position, {int? index}) =>
+      _audioPlayer.seek(position, index: index);
 
   @override
   Future<void> stop() => _audioPlayer.stop();

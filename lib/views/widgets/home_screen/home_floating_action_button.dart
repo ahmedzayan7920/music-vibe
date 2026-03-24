@@ -12,36 +12,40 @@ class HomeFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () async {
-        TextEditingController controller = TextEditingController();
-        await showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text("Add playlist"),
-              content: TextFormField(
-                controller: controller,
-                decoration: const InputDecoration(hintText: "Playlist name"),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Cancel"),
+        final TextEditingController controller = TextEditingController();
+        try {
+          await showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text("Add playlist"),
+                content: TextFormField(
+                  controller: controller,
+                  decoration: const InputDecoration(hintText: "Playlist name"),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    getIt<PlaylistsCubit>()
-                        .addPlayList(name: controller.text.trim());
-                  },
-                  child: const Text("Add"),
-                ),
-              ],
-            );
-          },
-        );
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Cancel"),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      getIt<PlaylistsCubit>()
+                          .addPlayList(name: controller.text.trim());
+                    },
+                    child: const Text("Add"),
+                  ),
+                ],
+              );
+            },
+          );
+        } finally {
+          controller.dispose();
+        }
       },
       child: const Icon(Icons.playlist_add),
     );

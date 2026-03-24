@@ -15,8 +15,8 @@ class FavoritesCubit extends Cubit<FavoritesState> {
     emit(FavoritesSuccessState(allFavoriteTracks: favorites));
   }
 
-  void toggleFavorite({required int id}) {
-    final favorites = _queryRepository.toggleFavorite(id: id);
+  Future<void> toggleFavorite({required int id}) async {
+    final favorites = await _queryRepository.toggleFavorite(id: id);
     emit(FavoritesSuccessState(allFavoriteTracks: favorites));
   }
 }

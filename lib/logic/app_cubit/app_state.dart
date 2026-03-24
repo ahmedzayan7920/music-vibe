@@ -1,12 +1,22 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 @immutable
-sealed class AppState {}
+sealed class AppState extends Equatable {
+  const AppState();
 
-final class AppInitialState extends AppState {}
+  @override
+  List<Object?> get props => [];
+}
 
-final class AppDarkState extends AppState {}
+final class AppInitialState extends AppState {
+  const AppInitialState();
+}
 
-final class AppLightState extends AppState {}
+final class AppDarkState extends AppState {
+  const AppDarkState();
+}
 
-
+final class AppLightState extends AppState {
+  const AppLightState();
+}

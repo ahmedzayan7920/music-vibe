@@ -103,7 +103,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
         distance.abs() > 100; // Adjust distance threshold as needed
 
     if (isHorizontalSwipe) {
-      final velocity = details.primaryVelocity!;
+      final velocity = details.primaryVelocity ?? 0;
       if (velocity < 0 && getIt<MyAudioHandler>().audioPlayer.hasNext) {
         getIt<MyAudioHandler>().skipToNext();
       } else if (velocity > 0 &&

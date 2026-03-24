@@ -137,7 +137,7 @@ class TrackListTileTrailing extends StatelessWidget {
     result.fold(
       (l) {
         playlistTracks =
-            getIt<QueryRepository>().allPlaylistsTracks[trackId] ?? [];
+            getIt<QueryRepository>().allPlaylistsTracks[playlistId] ?? [];
       },
       (r) {
         playlistTracks = r;

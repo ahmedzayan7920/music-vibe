@@ -5,6 +5,7 @@ extension MediaItemExtensions on MediaItem {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'album': album,
       'title': title,
       'artist': artist,
       'artUri': artUri?.toString(),

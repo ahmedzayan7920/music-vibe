@@ -38,14 +38,22 @@ class TimeSection extends StatelessWidget {
                           ?.inMicroseconds
                           .toDouble() ??
                       0.0,
-                  value: getIt<MyAudioHandler>()
-                              .audioPlayer
-                              .duration
-                              ?.inMicroseconds
-                              .toDouble() ==
-                          null
-                      ? 0.0
-                      : position.inMicroseconds.toDouble(),
+                  value: (getIt<MyAudioHandler>()
+                                  .audioPlayer
+                                  .duration
+                                  ?.inMicroseconds
+                                  .toDouble() ==
+                              null
+                          ? 0.0
+                          : position.inMicroseconds.toDouble())
+                      .clamp(
+                          0.0,
+                          getIt<MyAudioHandler>()
+                                  .audioPlayer
+                                  .duration
+                                  ?.inMicroseconds
+                                  .toDouble() ??
+                              0.0),
                   onChanged: (double value) {
                     getIt<MyAudioHandler>()
                         .seek(Duration(microseconds: value.toInt()));

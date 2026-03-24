@@ -80,8 +80,8 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
     if (Platform.isIOS) return;
     final success = await _onAudioQuery.addToPlaylist(playlistId, trackId);
     if (success) {
-      queryPlaylistTracks(id: playlistId);
-      _queryPlaylists();
+      await queryPlaylistTracks(id: playlistId);
+      await _queryPlaylists();
     }
   }
 
@@ -91,8 +91,8 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
     if (Platform.isIOS) return;
     final success = await _onAudioQuery.removeFromPlaylist(playlistId, trackId);
     if (success) {
-      queryPlaylistTracks(id: playlistId);
-      _queryPlaylists();
+      await queryPlaylistTracks(id: playlistId);
+      await _queryPlaylists();
     }
   }
 

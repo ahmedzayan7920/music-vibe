@@ -38,9 +38,9 @@ class _PermissionsScreenState extends State<PermissionsScreen>
     if (state == AppLifecycleState.resumed && _comeFromSettings) {
       final status = await OnAudioQuery().permissionsStatus();
       if (status) {
-        _goNext();
+        if (mounted) _goNext();
       } else {
-        setState(() {});
+        if (mounted) setState(() {});
       }
     }
   }

@@ -39,6 +39,7 @@ class ShuffleListTile extends StatelessWidget {
   }
 
   void _goNext(BuildContext context) {
+    if (tracks.isEmpty) return;
     Navigator.push(
       context,
       MaterialPageRoute(
