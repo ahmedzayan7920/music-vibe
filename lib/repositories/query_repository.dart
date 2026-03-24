@@ -16,6 +16,7 @@ class QueryRepository {
       : _audioQuery = audioQuery,
         _sharedPreferences = sharedPreferences {
     _getFavoriteIds();
+    _loadSoftDeletedItems();
   }
 
   List<SongModel> _allTracks = [];
@@ -52,6 +53,13 @@ class QueryRepository {
         return right(_allPlaylists);
       }
       _allPlaylists = await _audioQuery.queryPlaylists();
+      
+      // Filter out deleted playlists (MediaScanner might be stale on Android 10+)
+      _allPlaylists.removeWhere((p) => p.data != null && !File(p.data!).existsSync());
+      
+      // Filter out soft-deleted playlists (emulator / Android 10+ limitation fallback)
+      _allPlaylists.removeWhere((p) => deletedPlaylistIds.contains(p.id));
+      
       return right(_allPlaylists);
     } catch (error) {
       return left(Failure(message: error.toString()));
@@ -94,11 +102,14 @@ class QueryRepository {
       Set<int> addedTrackIds = {};
       _allPlaylistsTracks.remove(id);
       
+      final softDeletedTracks = deletedTracksFromPlaylists[id] ?? [];
+      
       for (var playlistTrack in playlistTracks) {
         for (var track in allTracks) {
           if (playlistTrack.title == track.title &&
               playlistTrack.duration == track.duration &&
-              !addedTrackIds.contains(track.id)) {
+              !addedTrackIds.contains(track.id) &&
+              !softDeletedTracks.contains(track.id)) {
             matchedTracks.add(track);
             addedTrackIds.add(track.id);
             break; // Stop searching once we find a match for this playlist track
@@ -142,9 +153,49 @@ class QueryRepository {
         [];
   }
 
+  // Soft deletion tracking to handle Android 10+ Scoped Storage restrictions
+  List<int> deletedPlaylistIds = [];
+  Map<int, List<int>> deletedTracksFromPlaylists = {};
+
+  void _loadSoftDeletedItems() {
+    final deletedPlaylistsStr = _sharedPreferences.getStringList("deletedPlaylists") ?? [];
+    deletedPlaylistIds = deletedPlaylistsStr.map((e) => int.parse(e)).toList();
+
+    final keys = _sharedPreferences.getKeys().where((k) => k.startsWith("deletedTracks_"));
+    for (var key in keys) {
+      final pIdStr = key.replaceFirst("deletedTracks_", "");
+      if (int.tryParse(pIdStr) != null) {
+        final pId = int.parse(pIdStr);
+        final list = _sharedPreferences.getStringList(key) ?? [];
+        deletedTracksFromPlaylists[pId] = list.map((e) => int.parse(e)).toList();
+      }
+    }
+  }
+
+  Future<void> softDeletePlaylist(int id) async {
+    if (!deletedPlaylistIds.contains(id)) {
+      deletedPlaylistIds.add(id);
+      await _sharedPreferences.setStringList(
+          "deletedPlaylists", deletedPlaylistIds.map((e) => e.toString()).toList());
+    }
+    _allPlaylists.removeWhere((p) => p.id == id);
+  }
+
+  Future<void> softDeleteTrackFromPlaylist(int playlistId, int trackId) async {
+    final list = deletedTracksFromPlaylists[playlistId] ?? [];
+    if (!list.contains(trackId)) {
+      list.add(trackId);
+      deletedTracksFromPlaylists[playlistId] = list;
+      await _sharedPreferences.setStringList(
+          "deletedTracks_$playlistId", list.map((e) => e.toString()).toList());
+    }
+    if (_allPlaylistsTracks[playlistId] != null) {
+      _allPlaylistsTracks[playlistId]!.removeWhere((t) => t.id == trackId);
+    }
+  }
+
   Future<Either<Failure, List<String>>> queryAllFolders() async {
     try {
-      // Folders are not supported on iOS due to plugin limitations
       if (Platform.isIOS) {
         _allFolders = [];
         return right(_allFolders);
@@ -159,7 +210,6 @@ class QueryRepository {
   Future<Either<Failure, List<SongModel>>> queryFolderSongs(
       {required String folder}) async {
     try {
-      // Folders are not supported on iOS due to plugin limitations
       if (Platform.isIOS) {
         return right(<SongModel>[]);
       }

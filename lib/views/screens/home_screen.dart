@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_vibe/views/widgets/home_screen/home_collections.dart';
 import 'package:music_vibe/views/widgets/home_screen/home_creators.dart';
 import 'package:music_vibe/views/widgets/home_screen/home_favorites.dart';
-import 'package:music_vibe/views/widgets/home_screen/home_playlists.dart';
 import 'package:music_vibe/views/widgets/home_screen/home_tracks.dart';
 import 'package:music_vibe/views/widgets/mini_player.dart';
 
@@ -12,7 +11,6 @@ import '../../logic/bottom_navigation_cubit/bottom_navigation_cubit.dart';
 import '../../logic/bottom_navigation_cubit/bottom_navigation_state.dart';
 import '../widgets/dark_light_switch.dart';
 import '../widgets/home_screen/home_bottom_navigation_bar.dart';
-import '../widgets/home_screen/home_floating_action_button.dart';
 import '../widgets/home_screen/home_folders.dart';
 import '../widgets/home_screen/search_button.dart';
 
@@ -58,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               children: [
                 HomeTracks(),
-                if (Platform.isAndroid) HomePlaylists(),
                 HomeCollections(),
                 HomeCreators(),
                 if (Platform.isAndroid) HomeFolders(),
@@ -73,14 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 HomeBottomNavigationBar(pageController: _pageController),
               ],
             ),
-            // Floating action button for adding playlists (Android only)
-            floatingActionButton: Platform.isAndroid &&
-                    context
-                            .read<BottomNavigationCubit>()
-                            .currentBottomNavigationIndex ==
-                        1
-                ? const HomeFloatingActionButton()
-                : null,
+            floatingActionButton: null,
           );
         },
       ),

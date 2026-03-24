@@ -17,6 +17,7 @@ class PreviousButton extends StatelessWidget {
               ? getIt<MyAudioHandler>().skipToPrevious
               : null,
           icon: const Icon(Icons.skip_previous),
+          iconSize: 36,
         );
       },
     );

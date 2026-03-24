@@ -18,7 +18,10 @@ class ActionButtons extends StatelessWidget {
       children: [
         ShuffleButton(),
         PreviousButton(),
-        PlayPauseButton(),
+        PlayPauseButton(
+          size: 80,
+          iconSize: 64,
+        ),
         NextButton(),
         RepeatButton(),
       ],

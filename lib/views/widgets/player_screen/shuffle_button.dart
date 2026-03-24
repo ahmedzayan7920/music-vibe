@@ -22,7 +22,8 @@ class ShuffleButton extends StatelessWidget {
                 .setShuffleModeEnabled(!isEnabled);
           },
           icon: const Icon(Icons.shuffle),
-          color: isEnabled ? Theme.of(context).colorScheme.primary : null,
+          iconSize: 32,
+          color: isEnabled ? Colors.orangeAccent : null,
           splashColor: Colors.transparent,
         );
       },

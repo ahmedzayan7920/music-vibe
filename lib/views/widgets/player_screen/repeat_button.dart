@@ -13,21 +13,20 @@ class RepeatButton extends StatelessWidget {
       stream: getIt<MyAudioHandler>().audioPlayer.loopModeStream,
       builder: (context, snapshot) {
         final loopMode = snapshot.data ?? LoopMode.off;
-        final icons = [
-          const Icon(Icons.repeat),
-          Icon(Icons.repeat, color: Theme.of(context).colorScheme.primary),
-          Icon(Icons.repeat_one, color: Theme.of(context).colorScheme.primary),
-        ];
-
         const repeatModes = [
           LoopMode.off,
           LoopMode.all,
           LoopMode.one,
         ];
-
         final index = repeatModes.indexOf(loopMode);
+        final icons = [
+          const Icon(Icons.repeat),
+          const Icon(Icons.repeat, color: Colors.orangeAccent),
+          const Icon(Icons.repeat_one, color: Colors.orangeAccent),
+        ];
 
         return IconButton(
+          iconSize: 32,
           icon: icons[index],
           onPressed: () {
             getIt<MyAudioHandler>().audioPlayer.setLoopMode(

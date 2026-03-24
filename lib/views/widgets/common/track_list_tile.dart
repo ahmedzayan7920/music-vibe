@@ -38,6 +38,12 @@ class TrackListTile extends StatelessWidget {
         track.artist ?? "unknown",
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0.6),
+            ),
       ),
       leading: ListTileLeading(
         id: track.id,

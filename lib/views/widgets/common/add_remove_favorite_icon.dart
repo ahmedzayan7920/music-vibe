@@ -29,7 +29,10 @@ class AddRemoveFavoriteIcon extends StatelessWidget {
             icon: Icon(
               getIt<QueryRepository>().favoriteIds.contains(id)
                   ? Icons.favorite
-                  : Icons.favorite_outline,
+                  : Icons.favorite_border,
+              color: getIt<QueryRepository>().favoriteIds.contains(id)
+                  ? Colors.redAccent
+                  : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           );
         },

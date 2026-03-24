@@ -1,0 +1,65 @@
+# Playlist Migration Plan (Hive CE)
+
+## Problem Statement
+The native `on_audio_query_pluse` implementation of Playlists is fundamentally flawed on Android 10+ due to Scoped Storage restrictions. Native playlist modifications (creating, adding tracks, deleting) fail silently or crash because the Android OS blocks apps from modifying MediaStore playlists.
+
+## Future Solution
+To permanently fix the playlist feature for both Android and iOS, the app must transition to maintaining its own local database of Playlists using `hive_ce`. The native plugin should only be used to fetch the audio tracks, while the local database manages how those tracks are grouped into user-defined playlists.
+
+### Step 1: Dependencies
+Add the required Hive packages to [pubspec.yaml](file:///Users/zayan/StudioProjects/music-vibe/pubspec.yaml):
+```yaml
+dependencies:
+  hive_ce: ^2.0.0      # Or latest
+  hive_ce_flutter: ^2.0.0
+```
+
+### Step 2: Define Entities
+Create a `PlaylistEntity` locally.
+```dart
+import 'package:hive_ce/hive.dart';
+
+part 'playlist_entity.g.dart';
+
+@HiveType(typeId: 1)
+class PlaylistEntity {
+  @HiveField(0)
+  final String id; // Use UUID or timestamps for unique IDs
+
+  @HiveField(1)
+  final String name;
+
+  @HiveField(2)
+  final DateTime dateAdded;
+
+  @HiveField(3)
+  final List<int> trackIds; // Stores the IDs of the audio tracks
+
+  PlaylistEntity({
+    required this.id,
+    required this.name,
+    required this.dateAdded,
+    required this.trackIds,
+  });
+}
+```
+
+### Step 3: Implement Hive Repository
+Update [QueryRepository](file:///Users/zayan/StudioProjects/music-vibe/lib/repositories/query_repository.dart#9-222) to use the Hive Box instead of `onAudioQuery.queryPlaylists()`.
+
+*   **queryAllPlaylists()**: Return all `PlaylistEntity` items from the Hive box.
+*   **addPlayList()**: Create a new `PlaylistEntity` and save it to the Hive box.
+*   **removePlayList()**: Delete the item from the Hive box.
+*   **addTrackToPlayList()**: Fetch the playlist from the box, add the track ID to `trackIds`, and save it back.
+*   **removeTrackFromPlayList()**: Fetch the playlist, remove the track ID from `trackIds`, and save it.
+*   **queryPlaylistTracks()**: 
+    1. Get the `PlaylistEntity` from the box to retrieve its `trackIds`.
+    2. Query all audio tracks from `on_audio_query`.
+    3. Filter all tracks to only return those whose `.id` exists in the `trackIds` list.
+
+### Step 4: Re-enable UI
+1. Restore [HomePlaylists()](file:///Users/zayan/StudioProjects/music-vibe/lib/views/widgets/home_screen/home_playlists.dart#12-77) into the [HomeScreen](file:///Users/zayan/StudioProjects/music-vibe/lib/views/screens/home_screen.dart#17-23) body list.
+2. Restore the Playlists tab in [HomeBottomNavigationBar](file:///Users/zayan/StudioProjects/music-vibe/lib/views/widgets/home_screen/home_bottom_navigation_bar.dart#8-67).
+3. Restore the "Add to Playlist" `PopupMenuButton` in [TrackListTileTrailing](file:///Users/zayan/StudioProjects/music-vibe/lib/views/widgets/common/track_list_tile_trailing.dart#5-23).
+
+By following this pattern, the app bypasses Android's MediaStore constraints entirely, gaining full control over CRUD operations and unlocking Playlists on iOS.

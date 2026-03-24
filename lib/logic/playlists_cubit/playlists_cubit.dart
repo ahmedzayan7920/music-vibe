@@ -66,12 +66,16 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
       return;
     }
     emit(PlaylistsLoadingState());
+    
     final success = await _onAudioQuery.removePlaylist(id);
-    if (success) {
-      await _queryPlaylists();
-    } else {
-      emit(PlaylistsSuccessState(allPlaylists: _queryRepository.allPlaylists));
+
+    // Fallback: Soft-delete the playlist if native deletion failed
+    // This often happens on Android 10+ due to Scoped Storage restrictions.
+    if (!success) {
+      await _queryRepository.softDeletePlaylist(id);
     }
+
+    await _queryPlaylists();
   }
 
   Future<void> addTrackToPlayList(
@@ -89,11 +93,17 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
       {required int playlistId, required int trackId}) async {
     // Playlist operations are not supported on iOS due to plugin limitations
     if (Platform.isIOS) return;
+    
     final success = await _onAudioQuery.removeFromPlaylist(playlistId, trackId);
-    if (success) {
-      await queryPlaylistTracks(id: playlistId);
-      await _queryPlaylists();
+
+    // Fallback: Soft-delete the track if native deletion failed
+    // This often happens on Android 10+ due to Scoped Storage restrictions.
+    if (!success) {
+      await _queryRepository.softDeleteTrackFromPlaylist(playlistId, trackId);
     }
+
+    await queryPlaylistTracks(id: playlistId);
+    await _queryPlaylists();
   }
 
   Future<void> _queryPlaylists() async {

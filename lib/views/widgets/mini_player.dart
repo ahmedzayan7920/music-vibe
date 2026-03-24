@@ -36,54 +36,85 @@ class _MiniPlayerState extends State<MiniPlayer> {
           onHorizontalDragEnd: (details) => _dragEnd(details),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              tileColor: Theme.of(context).colorScheme.primary,
-              onTap: () {
-                Navigator.of(context).push(PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) =>
-                      PlayerScreen(
-                    songs: const [],
-                    index: index,
-                    reOpen: true,
-                  ),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    const begin = Offset(0.0, 1.0);
-                    const end = Offset.zero;
-                    const curve = Curves.easeInOut;
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                color: Theme.of(context).colorScheme.primary,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  PlayerScreen(
+                            songs: const [],
+                            index: index,
+                            reOpen: true,
+                          ),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(0.0, 1.0);
+                            const end = Offset.zero;
+                            const curve = Curves.easeInOut;
 
-                    final tween = Tween(begin: begin, end: end)
-                        .chain(CurveTween(curve: curve));
+                            final tween = Tween(begin: begin, end: end)
+                                .chain(CurveTween(curve: curve));
 
-                    return SlideTransition(
-                      position: animation.drive(tween),
-                      child: child,
-                    );
-                  },
-                  transitionDuration: const Duration(milliseconds: 300),
-                ));
-              },
-              leading: ListTileLeading(
-                id: int.parse(sequence[index].tag.id),
-                type: ArtworkType.AUDIO,
-                placeholderIcon: Icons.graphic_eq,
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: child,
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ));
+                      },
+                      leading: ListTileLeading(
+                        id: int.parse(sequence[index].tag.id),
+                        type: ArtworkType.AUDIO,
+                        placeholderIcon: Icons.graphic_eq,
+                      ),
+                      title: Text(
+                        sequence[index].tag.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        sequence[index].tag.artist ?? "unknown",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.7)),
+                      ),
+                      trailing: const PlayPauseButton(color: Colors.white),
+                    ),
+                    StreamBuilder<Duration>(
+                      stream: getIt<MyAudioHandler>().audioPlayer.positionStream,
+                      builder: (context, snapshot) {
+                        final position = snapshot.data ?? Duration.zero;
+                        final duration =
+                            getIt<MyAudioHandler>().audioPlayer.duration ??
+                                Duration.zero;
+                        return LinearProgressIndicator(
+                          value: duration.inMilliseconds > 0
+                              ? position.inMilliseconds /
+                                  duration.inMilliseconds
+                              : 0.0,
+                          backgroundColor: Colors.white.withValues(alpha: 0.2),
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                              Colors.white),
+                          minHeight: 2,
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
-              title: Text(
-                sequence[index].tag.title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(color: Colors.white),
-              ),
-              subtitle: Text(
-                sequence[index].tag.artist ?? "unknown",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(color: Colors.grey),
-              ),
-              trailing: const PlayPauseButton(color: Colors.white),
             ),
           ),
         );

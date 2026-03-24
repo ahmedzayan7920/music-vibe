@@ -35,21 +35,27 @@ class _SearchFormFieldState extends State<SearchFormField> {
         onChanged: widget.onChanged,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.search,
-              color: Theme.of(context).colorScheme.onSurface),
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0.6)),
           hintText: 'Search for tracks...',
           hintStyle: TextStyle(
               color: Theme.of(context)
                   .colorScheme
                   .onSurface
-                  .withValues(alpha: 0.6)),
+                  .withValues(alpha: 0.4)),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide.none,
           ),
           filled: true,
-          fillColor: Theme.of(context).colorScheme.surface,
+          fillColor: Theme.of(context)
+              .colorScheme
+              .onSurface
+              .withValues(alpha: 0.05),
           contentPadding:
-              const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
         ),
         style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
       ),
