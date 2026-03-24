@@ -51,17 +51,19 @@ class _PermissionsScreenState extends State<PermissionsScreen>
       if (status) {
         _goNext();
       } else {
-        _hasPermission = await OnAudioQuery().permissionsRequest(
+        bool requested = await OnAudioQuery().permissionsRequest(
           retryRequest: retry,
         );
-        if (_hasPermission) {
+        setState(() {
+          _hasPermission = requested;
+        });
+        if (requested) {
           _goNext();
-        } else {
-          checkAndRequestPermissions(retry: true);
         }
+        // If not requested, the UI will show the "Permission Denied" message
       }
     } catch (e) {
-      setState(() {});
+      if (mounted) setState(() {});
     }
   }
 
@@ -90,7 +92,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
                     Icon(
                       Icons.warning,
                       size: 100,
-                      color: Colors.redAccent.withValues(alpha: 0.8),
+                      color: Colors.redAccent.withOpacity(0.8),
                     ),
                     const SizedBox(height: 20),
                     const Text(

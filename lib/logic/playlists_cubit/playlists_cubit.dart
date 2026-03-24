@@ -51,6 +51,11 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
       return;
     }
     emit(PlaylistsLoadingState());
+    final hasPermission = await _onAudioQuery.permissionsStatus();
+    if (!hasPermission) {
+      emit(PlaylistsSuccessState(allPlaylists: _queryRepository.allPlaylists));
+      return;
+    }
     final success = await _onAudioQuery.createPlaylist(name);
     if (success) {
       await _queryPlaylists();
@@ -67,6 +72,13 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
     }
     emit(PlaylistsLoadingState());
     
+    final hasPermission = await _onAudioQuery.permissionsStatus();
+    if (!hasPermission) {
+      await _queryRepository.softDeletePlaylist(id);
+      await _queryPlaylists();
+      return;
+    }
+
     final success = await _onAudioQuery.removePlaylist(id);
 
     // Fallback: Soft-delete the playlist if native deletion failed
@@ -82,6 +94,9 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
       {required int playlistId, required int trackId}) async {
     // Playlist operations are not supported on iOS due to plugin limitations
     if (Platform.isIOS) return;
+    final hasPermission = await _onAudioQuery.permissionsStatus();
+    if (!hasPermission) return;
+
     final success = await _onAudioQuery.addToPlaylist(playlistId, trackId);
     if (success) {
       await queryPlaylistTracks(id: playlistId);
@@ -94,6 +109,14 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
     // Playlist operations are not supported on iOS due to plugin limitations
     if (Platform.isIOS) return;
     
+    final hasPermission = await _onAudioQuery.permissionsStatus();
+    if (!hasPermission) {
+      await _queryRepository.softDeleteTrackFromPlaylist(playlistId, trackId);
+      await queryPlaylistTracks(id: playlistId);
+      await _queryPlaylists();
+      return;
+    }
+
     final success = await _onAudioQuery.removeFromPlaylist(playlistId, trackId);
 
     // Fallback: Soft-delete the track if native deletion failed

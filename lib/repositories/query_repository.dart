@@ -36,6 +36,10 @@ class QueryRepository {
 
   Future<Either<Failure, List<SongModel>>> queryAllTracks() async {
     try {
+      final hasPermission = await _audioQuery.permissionsStatus();
+      if (!hasPermission) {
+        return left(Failure(message: "No library access"));
+      }
       _allTracks = await _audioQuery.querySongs();
       return right(_allTracks);
     } catch (error) {
@@ -51,6 +55,10 @@ class QueryRepository {
       if (Platform.isIOS) {
         _allPlaylists = [];
         return right(_allPlaylists);
+      }
+      final hasPermission = await _audioQuery.permissionsStatus();
+      if (!hasPermission) {
+        return left(Failure(message: "No library access"));
       }
       _allPlaylists = await _audioQuery.queryPlaylists();
       
@@ -68,6 +76,10 @@ class QueryRepository {
 
   Future<Either<Failure, List<AlbumModel>>> queryAllCollections() async {
     try {
+      final hasPermission = await _audioQuery.permissionsStatus();
+      if (!hasPermission) {
+        return left(Failure(message: "No library access"));
+      }
       _allCollections = await _audioQuery.queryAlbums();
       return right(_allCollections);
     } catch (error) {
@@ -77,6 +89,10 @@ class QueryRepository {
 
   Future<Either<Failure, List<ArtistModel>>> queryAllCreators() async {
     try {
+      final hasPermission = await _audioQuery.permissionsStatus();
+      if (!hasPermission) {
+        return left(Failure(message: "No library access"));
+      }
       _allCreators = await _audioQuery.queryArtists();
       return right(_allCreators);
     } catch (error) {
@@ -95,6 +111,10 @@ class QueryRepository {
       if (_allPlaylistsTracks[id] != null &&
           _allPlaylistsTracks[id]!.isNotEmpty) {
         return right(_allPlaylistsTracks[id]!);
+      }
+      final hasPermission = await _audioQuery.permissionsStatus();
+      if (!hasPermission) {
+        return left(Failure(message: "No library access"));
       }
       List<SongModel> playlistTracks =
           await _audioQuery.queryAudiosFrom(AudiosFromType.PLAYLIST, id);
@@ -200,6 +220,10 @@ class QueryRepository {
         _allFolders = [];
         return right(_allFolders);
       }
+      final hasPermission = await _audioQuery.permissionsStatus();
+      if (!hasPermission) {
+        return left(Failure(message: "No library access"));
+      }
       _allFolders = await _audioQuery.queryAllPath();
       return right(_allFolders);
     } catch (error) {
@@ -212,6 +236,10 @@ class QueryRepository {
     try {
       if (Platform.isIOS) {
         return right(<SongModel>[]);
+      }
+      final hasPermission = await _audioQuery.permissionsStatus();
+      if (!hasPermission) {
+        return left(Failure(message: "No library access"));
       }
       return right(await _audioQuery.querySongs(path: folder));
     } catch (error) {
