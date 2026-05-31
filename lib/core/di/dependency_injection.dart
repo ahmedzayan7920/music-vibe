@@ -1,9 +1,9 @@
 import 'package:get_it/get_it.dart';
-import 'package:music_vibe/core/handlers/song_handler.dart';
-import 'package:music_vibe/logic/albums_cubit/albums_cubit.dart';
-import 'package:music_vibe/logic/favorites_cubit/favorites_cubit.dart';
-import 'package:music_vibe/logic/playlists_cubit/playlists_cubit.dart';
-import 'package:music_vibe/logic/songs_cubit/songs_cubit.dart';
+import 'package:sonic_vibe/core/handlers/track_handler.dart';
+import 'package:sonic_vibe/logic/albums_cubit/albums_cubit.dart';
+import 'package:sonic_vibe/logic/favorites_cubit/favorites_cubit.dart';
+import 'package:sonic_vibe/logic/playlists_cubit/playlists_cubit.dart';
+import 'package:sonic_vibe/logic/tracks_cubit/tracks_cubit.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,14 +23,14 @@ Future<void> initDependencyInjection() async {
       audioQuery: getIt<OnAudioQuery>(),
       sharedPreferences: getIt<SharedPreferences>(),
     )
-      ..queryAllSongs()
+      ..queryAllTracks()
       ..queryAllPlaylists()
       ..queryAllAlbums()
       ..queryAllArtists()
-      ..queryFavoriteSongs(),
+      ..queryFavoriteTracks(),
   );
-  getIt.registerLazySingleton<SongsCubit>(
-    () => SongsCubit(
+  getIt.registerLazySingleton<TracksCubit>(
+    () => TracksCubit(
       queryRepository: getIt<QueryRepository>(),
     ),
   );

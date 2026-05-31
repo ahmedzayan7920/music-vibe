@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:music_vibe/core/di/dependency_injection.dart';
-import 'package:music_vibe/logic/playlists_cubit/playlists_cubit.dart';
-import 'package:music_vibe/repositories/query_repository.dart';
-import 'package:music_vibe/views/widgets/common/playlist_list_tile.dart';
+import 'package:sonic_vibe/core/di/dependency_injection.dart';
+import 'package:sonic_vibe/logic/playlists_cubit/playlists_cubit.dart';
+import 'package:sonic_vibe/repositories/query_repository.dart';
+import 'package:sonic_vibe/views/widgets/common/playlist_list_tile.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 
 import 'add_remove_favorite_icon.dart';
 import 'empty_state.dart';
 
-class SongListTileTrailing extends StatelessWidget {
-  const SongListTileTrailing({
+class TrackListTileTrailing extends StatelessWidget {
+  const TrackListTileTrailing({
     super.key,
-    required this.songId,
+    required this.trackId,
   });
 
-  final int songId;
+  final int trackId;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        AddRemoveFavoriteIcon(id: songId),
+        AddRemoveFavoriteIcon(id: trackId),
         PopupMenuButton(
           itemBuilder: (context) {
             return [
@@ -69,7 +69,7 @@ class SongListTileTrailing extends StatelessWidget {
                                               return PlaylistListTile(
                                                 playlist: allPlaylists[index],
                                                 onTap: () {
-                                                  isSongExist(
+                                                  isTrackExist(
                                                           playlistId:
                                                               allPlaylists[
                                                                       index]
@@ -95,7 +95,7 @@ class SongListTileTrailing extends StatelessWidget {
                                                               allPlaylists[
                                                                       index]
                                                                   .id,
-                                                          songId: songId,
+                                                          songId: trackId,
                                                         );
                                                         if (context.mounted) {
                                                           Navigator.pop(
@@ -128,24 +128,24 @@ class SongListTileTrailing extends StatelessWidget {
     );
   }
 
-  Future<bool> isSongExist({
+  Future<bool> isTrackExist({
     required int playlistId,
   }) async {
-    List<SongModel> playlistSongs = [];
+    List<SongModel> playlistTracks = [];
     final result =
-        await getIt<QueryRepository>().queryPlaylistSongs(id: playlistId);
+        await getIt<QueryRepository>().queryPlaylistTracks(id: playlistId);
     result.fold(
       (l) {
-        playlistSongs =
-            getIt<QueryRepository>().allPlaylistsSongs[songId] ?? [];
+        playlistTracks =
+            getIt<QueryRepository>().allPlaylistsTracks[trackId] ?? [];
       },
       (r) {
-        playlistSongs = r;
+        playlistTracks = r;
       },
     );
 
     List<SongModel> match =
-        playlistSongs.where((element) => element.id == songId).toList();
+        playlistTracks.where((element) => element.id == trackId).toList();
     return match.isNotEmpty;
   }
 }

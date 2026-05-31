@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../../../core/di/dependency_injection.dart';
-import '../../../core/handlers/song_handler.dart';
+import '../../../core/handlers/track_handler.dart';
 
 class PreviousButton extends StatelessWidget {
   const PreviousButton({super.key});

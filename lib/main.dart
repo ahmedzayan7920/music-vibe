@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music_vibe/logic/app_cubit/app_cubit.dart';
+import 'package:sonic_vibe/logic/app_cubit/app_cubit.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/di/dependency_injection.dart';
 import 'core/handlers/app_bloc_observer.dart';
-import 'core/handlers/song_handler.dart';
+import 'core/handlers/track_handler.dart';
 import 'core/theming/app_themes.dart';
 import 'logic/app_cubit/app_state.dart';
 import 'views/screens/home_screen.dart';

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music_vibe/logic/playlists_cubit/playlists_cubit.dart';
+import 'package:sonic_vibe/logic/playlists_cubit/playlists_cubit.dart';
 
 import '../../core/di/dependency_injection.dart';
 import '../../logic/playlists_cubit/playlists_state.dart';
 import '../widgets/common/empty_state.dart';
 import '../widgets/common/shuffle_list_tile.dart';
 import '../widgets/mini_player.dart';
-import '../widgets/playlist_songs_screen/playlist_song_list_tile.dart';
-import '../widgets/playlist_songs_screen/playlist_songs_floating_action_button.dart';
+import '../widgets/playlist_tracks_screen/playlist_track_list_tile.dart';
+import '../widgets/playlist_tracks_screen/playlist_tracks_floating_action_button.dart';
 
-class PlaylistSongsScreen extends StatelessWidget {
-  const PlaylistSongsScreen({
+class PlaylistTracksScreen extends StatelessWidget {
+  const PlaylistTracksScreen({
     super.key,
     required this.playlistId,
     required this.playlistName,
@@ -22,34 +22,34 @@ class PlaylistSongsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: getIt<PlaylistsCubit>()..queryPlaylistSongs(id: playlistId),
+      value: getIt<PlaylistsCubit>()..queryPlaylistTracks(id: playlistId),
       child: Scaffold(
         appBar: AppBar(
           title: Text(playlistName),
         ),
         body: BlocBuilder<PlaylistsCubit, PlaylistsState>(
           buildWhen: (previous, current) =>
-              current is PlaylistSongsLoadingState ||
-              current is PlaylistSongsFailureState ||
-              current is PlaylistSongsSuccessState,
+              current is PlaylistTracksLoadingState ||
+              current is PlaylistTracksFailureState ||
+              current is PlaylistTracksSuccessState,
           builder: (context, state) {
-            if (state is PlaylistSongsSuccessState) {
-              final allSongs = state.allSongs;
-              if (allSongs.isEmpty) {
+            if (state is PlaylistTracksSuccessState) {
+              final allTracks = state.allTracks;
+              if (allTracks.isEmpty) {
                 return const EmptyState(message: 'No Sounds Found');
               }
               return Column(
                 children: [
-                  allSongs.isEmpty
+                  allTracks.isEmpty
                       ? const SizedBox()
-                      : ShuffleListTile(songs: allSongs),
+                      : ShuffleListTile(songs: allTracks),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: allSongs.length,
+                      itemCount: allTracks.length,
                       itemBuilder: (context, index) {
-                        return PlaylistSongListTile(
-                          allSongs: allSongs,
-                          song: allSongs[index],
+                        return PlaylistTrackListTile(
+                          allTracks: allTracks,
+                          track: allTracks[index],
                           playlistId: playlistId,
                         );
                       },
@@ -57,7 +57,7 @@ class PlaylistSongsScreen extends StatelessWidget {
                   ),
                 ],
               );
-            } else if (state is PlaylistSongsFailureState) {
+            } else if (state is PlaylistTracksFailureState) {
               return Center(
                 child: Text(state.message),
               );
@@ -70,7 +70,7 @@ class PlaylistSongsScreen extends StatelessWidget {
         ),
         bottomNavigationBar: SafeArea(child: const MiniPlayer()),
         floatingActionButton:
-            PlaylistSongsFloatingActionButton(playlistId: playlistId),
+            PlaylistTracksFloatingActionButton(playlistId: playlistId),
       ),
     );
   }

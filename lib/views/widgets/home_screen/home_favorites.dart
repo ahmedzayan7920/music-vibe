@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music_vibe/views/widgets/common/song_list_tile.dart';
+import 'package:sonic_vibe/views/widgets/common/track_list_tile.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 
 import '../../../core/di/dependency_injection.dart';
@@ -22,8 +22,8 @@ class HomeFavorites extends StatelessWidget {
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
           if (state is FavoritesSuccessState) {
-            List<SongModel> allFavoriteSongs = state.allFavoriteSongs;
-            if (allFavoriteSongs.isEmpty) {
+            List<SongModel> allFavoriteTracks = state.allFavoriteTracks;
+            if (allFavoriteTracks.isEmpty) {
               return RefreshIndicator(
                 onRefresh: () async {
                   context.read<FavoritesCubit>().queryFavorites();
@@ -39,20 +39,20 @@ class HomeFavorites extends StatelessWidget {
             }
             return Column(
               children: [
-                allFavoriteSongs.isEmpty
+                allFavoriteTracks.isEmpty
                     ? const SizedBox()
-                    : ShuffleListTile(songs: allFavoriteSongs),
+                    : ShuffleListTile(songs: allFavoriteTracks),
                 Expanded(
                   child: RefreshIndicator(
                     onRefresh: () async {
                       context.read<FavoritesCubit>().queryFavorites();
                     },
                     child: ListView.builder(
-                      itemCount: allFavoriteSongs.length,
+                      itemCount: allFavoriteTracks.length,
                       itemBuilder: (context, index) {
-                        return SongListTile(
-                          allSongs: allFavoriteSongs,
-                          song: allFavoriteSongs[index],
+                        return TrackListTile(
+                          allTracks: allFavoriteTracks,
+                          track: allFavoriteTracks[index],
                         );
                       },
                     ),

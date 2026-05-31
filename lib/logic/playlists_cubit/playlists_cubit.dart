@@ -29,15 +29,15 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
     _queryPlaylists();
   }
 
-  Future<void> queryPlaylistSongs({required int id}) async {
-    emit(PlaylistSongsLoadingState());
-    final result = await _queryRepository.queryPlaylistSongs(id: id);
+  Future<void> queryPlaylistTracks({required int id}) async {
+    emit(PlaylistTracksLoadingState());
+    final result = await _queryRepository.queryPlaylistTracks(id: id);
     result.fold(
       (failure) {
-        emit(PlaylistSongsFailureState(message: failure.message));
+        emit(PlaylistTracksFailureState(message: failure.message));
       },
-      (songs) {
-        emit(PlaylistSongsSuccessState(allSongs: songs));
+      (tracks) {
+        emit(PlaylistTracksSuccessState(allTracks: tracks));
       },
     );
   }
@@ -66,7 +66,7 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
       {required int playlistId, required int songId}) async {
     final success = await _onAudioQuery.addToPlaylist(playlistId, songId);
     if (success) {
-      queryPlaylistSongs(id: playlistId);
+      queryPlaylistTracks(id: playlistId);
       _queryPlaylists();
     }
   }
@@ -75,7 +75,7 @@ class PlaylistsCubit extends Cubit<PlaylistsState> {
       {required int playlistId, required int songId}) async {
     final success = await _onAudioQuery.removeFromPlaylist(playlistId, songId);
     if (success) {
-      queryPlaylistSongs(id: playlistId);
+      queryPlaylistTracks(id: playlistId);
       _queryPlaylists();
     }
   }

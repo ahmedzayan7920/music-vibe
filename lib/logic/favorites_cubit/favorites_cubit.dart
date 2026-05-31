@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music_vibe/repositories/query_repository.dart';
+import 'package:sonic_vibe/repositories/query_repository.dart';
 
 import 'favorites_state.dart';
 
@@ -11,12 +11,12 @@ class FavoritesCubit extends Cubit<FavoritesState> {
         super(FavoritesInitialState());
 
   void queryFavorites() {
-    final favorites = _queryRepository.queryFavoriteSongs();
-    emit(FavoritesSuccessState(allFavoriteSongs: favorites));
+    final favorites = _queryRepository.queryFavoriteTracks();
+    emit(FavoritesSuccessState(allFavoriteTracks: favorites));
   }
 
   void toggleFavorite({required int id}) {
     final favorites = _queryRepository.toggleFavorite(id: id);
-    emit(FavoritesSuccessState(allFavoriteSongs: favorites));
+    emit(FavoritesSuccessState(allFavoriteTracks: favorites));
   }
 }

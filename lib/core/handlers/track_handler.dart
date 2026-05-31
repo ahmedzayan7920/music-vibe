@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:music_vibe/core/di/dependency_injection.dart';
-import 'package:music_vibe/core/extensions/extensions.dart';
+import 'package:sonic_vibe/core/di/dependency_injection.dart';
+import 'package:sonic_vibe/core/extensions/extensions.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -104,16 +104,16 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
   }
 
   Future<void> setupPlaylist(List<SongModel> playlist, int startIndex) async {
-    final sources = playlist.map((song) {
+    final sources = playlist.map((track) {
       return AudioSource.uri(
-        Uri.parse(song.uri!),
+        Uri.parse(track.uri!),
         tag: MediaItem(
-          id: song.id.toString(),
-          album: song.album ?? 'Unknown Album',
-          title: song.title,
-          artist: song.artist ?? 'Unknown Artist',
-          duration: Duration(milliseconds: song.duration ?? 0),
-          artUri: Uri.parse(song.uri!),
+          id: track.id.toString(),
+          album: track.album ?? 'Unknown Album',
+          title: track.title,
+          artist: track.artist ?? 'Unknown Artist',
+          duration: Duration(milliseconds: track.duration ?? 0),
+          artUri: Uri.parse(track.uri!),
         ),
       );
     }).toList();
