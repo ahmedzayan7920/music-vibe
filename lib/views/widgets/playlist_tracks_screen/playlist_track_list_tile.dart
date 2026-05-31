@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:music_vibe/views/widgets/common/song_list_tile_trailing.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 
 import '../../screens/player_screen.dart';
-import 'list_tile_leading.dart';
+import '../common/list_tile_leading.dart';
+import 'playlist_track_list_tile_trailing.dart';
 
-class SongListTile extends StatelessWidget {
-  const SongListTile({
+class PlaylistTrackListTile extends StatelessWidget {
+  const PlaylistTrackListTile({
     super.key,
-    required this.allSongs,
-    required this.song,
+    required this.allTracks,
+    required this.track,
+    required this.playlistId,
   });
 
-  final List<SongModel> allSongs;
-  final SongModel song;
+  final List<SongModel> allTracks;
+  final SongModel track;
+  final int playlistId;
 
   @override
   Widget build(BuildContext context) {
@@ -23,28 +25,29 @@ class SongListTile extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => PlayerScreen(
-              songs: allSongs,
-              index: allSongs.indexOf(song),
+              songs: allTracks,
+              index: allTracks.indexOf(track),
             ),
           ),
         );
       },
       title: Text(
-        song.title,
+        track.title,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
-        song.artist ?? "unknown",
+        track.artist ?? "unknown",
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
       leading: ListTileLeading(
-        id: song.id,
+        id: track.id,
         type: ArtworkType.AUDIO,
         placeholderIcon: Icons.music_note_outlined,
       ),
-      trailing: SongListTileTrailing(songId: song.id),
+      trailing: PlaylistTrackListTileTrailing(
+          playlistId: playlistId, trackId: track.id),
     );
   }
 }

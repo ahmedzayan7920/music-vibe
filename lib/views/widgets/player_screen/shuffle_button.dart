@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/di/dependency_injection.dart';
-import '../../../core/handlers/song_handler.dart';
+import '../../../core/handlers/track_handler.dart';
 
 class ShuffleButton extends StatelessWidget {
   const ShuffleButton({super.key});

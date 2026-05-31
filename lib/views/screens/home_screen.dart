@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music_vibe/views/widgets/home_screen/home_albums.dart';
-import 'package:music_vibe/views/widgets/home_screen/home_artists.dart';
-import 'package:music_vibe/views/widgets/home_screen/home_favorites.dart';
-import 'package:music_vibe/views/widgets/home_screen/home_playlists.dart';
-import 'package:music_vibe/views/widgets/home_screen/home_songs.dart';
-import 'package:music_vibe/views/widgets/mini_player.dart';
+import 'package:sonic_vibe/views/widgets/home_screen/home_albums.dart';
+import 'package:sonic_vibe/views/widgets/home_screen/home_artists.dart';
+import 'package:sonic_vibe/views/widgets/home_screen/home_favorites.dart';
+import 'package:sonic_vibe/views/widgets/home_screen/home_playlists.dart';
+import 'package:sonic_vibe/views/widgets/home_screen/home_tracks.dart';
+import 'package:sonic_vibe/views/widgets/mini_player.dart';
 
 import '../../logic/bottom_navigation_cubit/bottom_navigation_cubit.dart';
 import '../../logic/bottom_navigation_cubit/bottom_navigation_state.dart';
@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
             appBar: AppBar(
               elevation: 0,
               centerTitle: true,
-              title: const Text("Music Vibe"),
+              title: const Text("SonicVibe"),
               leadingWidth: 72,
               leading: const DarkLightSwitch(),
               actions: const [SearchButton()],
@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     .setCurrentBottomNavigationIndex(index);
               },
               children: [
-                HomeSongs(),
+                HomeTracks(),
                 HomePlaylists(),
                 HomeAlbums(),
                 HomeArtists(),

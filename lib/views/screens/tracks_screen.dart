@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:music_vibe/core/di/dependency_injection.dart';
-import 'package:music_vibe/repositories/query_repository.dart';
+import 'package:sonic_vibe/core/di/dependency_injection.dart';
+import 'package:sonic_vibe/repositories/query_repository.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 
 import '../widgets/common/empty_state.dart';
 import '../widgets/common/shuffle_list_tile.dart';
-import '../widgets/common/song_list_tile.dart';
+import '../widgets/common/track_list_tile.dart';
 
-class SongsScreen extends StatefulWidget {
-  const SongsScreen({super.key, required this.title, required this.type});
+class TracksScreen extends StatefulWidget {
+  const TracksScreen({super.key, required this.title, required this.type});
 
   final String title;
   final AudiosFromType type;
 
   @override
-  State<SongsScreen> createState() => _SongsScreenState();
+  State<TracksScreen> createState() => _TracksScreenState();
 }
 
-class _SongsScreenState extends State<SongsScreen> {
-  late List<SongModel> songs;
+class _TracksScreenState extends State<TracksScreen> {
+  late List<SongModel> tracks;
 
   @override
   void initState() {
-    songs = getIt<QueryRepository>().allSongs.where(
-      (song) {
+    tracks = getIt<QueryRepository>().allTracks.where(
+      (track) {
         if (widget.type == AudiosFromType.ALBUM) {
-          return song.album == widget.title;
+          return track.album == widget.title;
         } else if (widget.type == AudiosFromType.GENRE) {
-          return song.data.contains(widget.title);
+          return track.data.contains(widget.title);
         } else {
-          return song.artist == widget.title;
+          return track.artist == widget.title;
         }
       },
     ).toList();
@@ -42,18 +42,19 @@ class _SongsScreenState extends State<SongsScreen> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: (songs.isEmpty)
+      body: (tracks.isEmpty)
           ? const EmptyState(message: 'No Sounds Found')
           : Column(
               children: [
-                songs.isEmpty
+                tracks.isEmpty
                     ? const SizedBox()
-                    : ShuffleListTile(songs: songs),
+                    : ShuffleListTile(songs: tracks),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: songs.length,
+                    itemCount: tracks.length,
                     itemBuilder: (context, index) {
-                      return SongListTile(allSongs: songs, song: songs[index]);
+                      return TrackListTile(
+                          allTracks: tracks, track: tracks[index]);
                     },
                   ),
                 ),

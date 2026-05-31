@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:music_vibe/views/widgets/common/list_tile_leading.dart';
+import 'package:sonic_vibe/views/widgets/common/list_tile_leading.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 
 import '../../../core/di/dependency_injection.dart';

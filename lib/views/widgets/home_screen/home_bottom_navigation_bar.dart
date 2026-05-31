@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music_vibe/logic/bottom_navigation_cubit/bottom_navigation_cubit.dart';
+import 'package:sonic_vibe/logic/bottom_navigation_cubit/bottom_navigation_cubit.dart';
 
 import '../../../logic/bottom_navigation_cubit/bottom_navigation_state.dart';
 

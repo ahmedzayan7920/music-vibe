@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music_vibe/repositories/query_repository.dart';
+import 'package:sonic_vibe/repositories/query_repository.dart';
 
 import 'folders_state.dart';
 

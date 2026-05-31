@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:music_vibe/logic/playlists_cubit/playlists_cubit.dart';
-import 'package:music_vibe/repositories/query_repository.dart';
-import 'package:music_vibe/views/widgets/common/list_tile_leading.dart';
+import 'package:sonic_vibe/logic/playlists_cubit/playlists_cubit.dart';
+import 'package:sonic_vibe/repositories/query_repository.dart';
+import 'package:sonic_vibe/views/widgets/common/list_tile_leading.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 
 import '../../../core/di/dependency_injection.dart';
 import '../common/empty_state.dart';
 
-class PlaylistSongsFloatingActionButton extends StatelessWidget {
-  const PlaylistSongsFloatingActionButton({
+class PlaylistTracksFloatingActionButton extends StatelessWidget {
+  const PlaylistTracksFloatingActionButton({
     super.key,
     required this.playlistId,
   });
@@ -22,7 +22,7 @@ class PlaylistSongsFloatingActionButton extends StatelessWidget {
         showDialog(
           context: context,
           builder: (context) {
-            final allSongs = getIt<QueryRepository>().allSongs;
+            final allTracks = getIt<QueryRepository>().allTracks;
             return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
@@ -35,37 +35,35 @@ class PlaylistSongsFloatingActionButton extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * .5,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: allSongs.isEmpty
+                  child: allTracks.isEmpty
                       ? const EmptyState(message: 'No Sounds Found')
                       : Column(
                           children: [
                             const Text(
                               "Sounds",
                               style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
+                                  fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             Expanded(
                               child: ListView.builder(
-                                itemCount: allSongs.length,
+                                itemCount: allTracks.length,
                                 itemBuilder: (context, index) {
                                   return ListTile(
                                     title: Text(
-                                      allSongs[index].title,
+                                      allTracks[index].title,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     leading: ListTileLeading(
-                                      id: allSongs[index].id,
+                                      id: allTracks[index].id,
                                       type: ArtworkType.AUDIO,
                                       placeholderIcon:
                                           Icons.music_note_outlined,
                                     ),
                                     onTap: () {
                                       if (getIt<QueryRepository>()
-                                              .allPlaylistsSongs[playlistId]
-                                              ?.contains(allSongs[index]) ??
+                                              .allPlaylistsTracks[playlistId]
+                                              ?.contains(allTracks[index]) ??
                                           false) {
                                         ScaffoldMessenger.of(context)
                                           ..hideCurrentSnackBar()
@@ -80,7 +78,7 @@ class PlaylistSongsFloatingActionButton extends StatelessWidget {
                                         getIt<PlaylistsCubit>()
                                             .addSongToPlayList(
                                           playlistId: playlistId,
-                                          songId: allSongs[index].id,
+                                          songId: allTracks[index].id,
                                         );
                                       }
                                     },

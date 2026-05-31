@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music_vibe/logic/favorites_cubit/favorites_cubit.dart';
-import 'package:music_vibe/logic/favorites_cubit/favorites_state.dart';
-import 'package:music_vibe/repositories/query_repository.dart';
+import 'package:sonic_vibe/logic/favorites_cubit/favorites_cubit.dart';
+import 'package:sonic_vibe/logic/favorites_cubit/favorites_state.dart';
+import 'package:sonic_vibe/repositories/query_repository.dart';
 
 import '../../../core/di/dependency_injection.dart';
 

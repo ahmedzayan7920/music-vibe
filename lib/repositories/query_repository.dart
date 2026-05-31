@@ -16,25 +16,25 @@ class QueryRepository {
     _getFavoriteIds();
   }
 
-  List<SongModel> _allSongs = [];
+  List<SongModel> _allTracks = [];
   List<PlaylistModel> _allPlaylists = [];
   List<AlbumModel> _allAlbums = [];
   List<ArtistModel> _allArtists = [];
   List<String> _allFolders = [];
   List<int> favoriteIds = [];
-  final Map<int, List<SongModel>> _allPlaylistsSongs = {};
+  final Map<int, List<SongModel>> _allPlaylistsTracks = {};
 
-  List<SongModel> get allSongs => _allSongs;
+  List<SongModel> get allTracks => _allTracks;
   List<PlaylistModel> get allPlaylists => _allPlaylists;
   List<AlbumModel> get allAlbums => _allAlbums;
   List<ArtistModel> get allArtists => _allArtists;
   List<String> get allFolders => _allFolders;
-  Map<int, List<SongModel>> get allPlaylistsSongs => _allPlaylistsSongs;
+  Map<int, List<SongModel>> get allPlaylistsTracks => _allPlaylistsTracks;
 
-  Future<Either<Failure, List<SongModel>>> queryAllSongs() async {
+  Future<Either<Failure, List<SongModel>>> queryAllTracks() async {
     try {
-      _allSongs = await _audioQuery.querySongs();
-      return right(_allSongs);
+      _allTracks = await _audioQuery.querySongs();
+      return right(_allTracks);
     } catch (error) {
       return left(Failure(message: error.toString()));
     }
@@ -67,7 +67,7 @@ class QueryRepository {
     }
   }
 
-  Future<Either<Failure, List<SongModel>>> queryPlaylistSongs({
+  Future<Either<Failure, List<SongModel>>> queryPlaylistTracks({
     required int id,
   }) async {
     try {
@@ -79,29 +79,29 @@ class QueryRepository {
         ignoreCase: true,
       );
 
-      List<SongModel> matchedSongs = [];
-      _allPlaylistsSongs.remove(id);
+      List<SongModel> matchedTracks = [];
+      _allPlaylistsTracks.remove(id);
       for (var playlistSong in playlistSongs) {
-        for (var song in allSongs) {
+        for (var song in allTracks) {
           if (playlistSong.title == song.title &&
               playlistSong.duration == song.duration) {
-            matchedSongs.add(song);
+            matchedTracks.add(song);
             break;
           }
         }
       }
 
-      _allPlaylistsSongs[id] = matchedSongs;
-      return right(matchedSongs);
+      _allPlaylistsTracks[id] = matchedTracks;
+      return right(matchedTracks);
     } catch (error) {
       return left(Failure(message: error.toString()));
     }
   }
 
-  List<SongModel> queryFavoriteSongs() {
-    final allFavoriteSongs =
-        _allSongs.where((song) => favoriteIds.contains(song.id)).toList();
-    return allFavoriteSongs;
+  List<SongModel> queryFavoriteTracks() {
+    final allFavoriteTracks =
+        _allTracks.where((song) => favoriteIds.contains(song.id)).toList();
+    return allFavoriteTracks;
   }
 
   List<SongModel> toggleFavorite({required int id}) {
@@ -109,12 +109,12 @@ class QueryRepository {
       favoriteIds.remove(id);
       _sharedPreferences.setStringList(
           "favorite", favoriteIds.map((e) => e.toString()).toList());
-      return queryFavoriteSongs();
+      return queryFavoriteTracks();
     } else {
       favoriteIds.add(id);
       _sharedPreferences.setStringList(
           "favorite", favoriteIds.map((e) => e.toString()).toList());
-      return queryFavoriteSongs();
+      return queryFavoriteTracks();
     }
   }
 
@@ -137,7 +137,7 @@ class QueryRepository {
     }
   }
 
-  Future<Either<Failure, List<SongModel>>> queryFolderSongs(
+  Future<Either<Failure, List<SongModel>>> queryFolderTracks(
       {required String folder}) async {
     try {
       return right(await _audioQuery.querySongs(path: folder));

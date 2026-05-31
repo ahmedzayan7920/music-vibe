@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:music_vibe/views/widgets/common/list_tile_leading.dart';
+import 'package:sonic_vibe/views/widgets/common/list_tile_leading.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 
-import '../../screens/songs_screen.dart';
+import '../../screens/tracks_screen.dart';
 
 class AlbumListTile extends StatelessWidget {
   const AlbumListTile({super.key, required this.album});
@@ -14,7 +14,7 @@ class AlbumListTile extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SongsScreen(
+            builder: (context) => TracksScreen(
               title: album.album,
               type: AudiosFromType.ALBUM,
             ),
@@ -27,7 +27,7 @@ class AlbumListTile extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
-        "${album.numOfSongs} songs",
+        "${album.numOfSongs} tracks",
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),

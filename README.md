@@ -2,23 +2,23 @@
 <html lang="en">
 <body>
 
-<h1>Music Vibe</h1>
+<h1>SonicVibe</h1>
 
-<p><strong>Music Vibe</strong> is a Flutter-based music player application designed to offer a seamless and engaging music listening experience. With features like background playback, custom media button actions, and personalized song management, Music Vibe enhances your music enjoyment on mobile devices.</p>
+<p><strong>SonicVibe</strong> is a Flutter-based premium global audio player application designed to offer a seamless and engaging listening experience. With features like background playback, custom media button actions, and personalized track management, SonicVibe enhances your audio enjoyment on mobile devices.</p>
 
 <h2>Features</h2>
 <ul>
-    <li><strong>Background Playback</strong>: Continue listening to your favorite music even when the app is running in the background.</li>
-    <li><strong>Custom Media Button Actions</strong>: Control music playback with double and triple clicks of the media button.</li>
-    <li><strong>Last Played Song Memory</strong>: Automatically remembers and resumes the last played song.</li>
-    <li><strong>Dynamic UI</strong>: User-friendly and visually appealing interface for an optimal music experience.</li>
-    <li><strong>Local Storage</strong>: Access and manage music files stored on your device.</li>
+    <li><strong>Background Playback</strong>: Continue listening to your favorite tracks even when the app is running in the background.</li>
+    <li><strong>Custom Media Button Actions</strong>: Control audio playback with double and triple clicks of the media button.</li>
+    <li><strong>Last Played Track Memory</strong>: Automatically remembers and resumes the last played track.</li>
+    <li><strong>Dynamic UI</strong>: User-friendly and visually appealing interface for an optimal audio experience.</li>
+    <li><strong>Local Storage</strong>: Access and manage audio files stored on your device.</li>
 </ul>
 
 <h2>Screenshots</h2>
 
 <p>
-    <img src="https://github.com/user-attachments/assets/7129e950-badb-4e08-9ef9-9fe142958e5a" alt="Songs" width="300" />
+    <img src="https://github.com/user-attachments/assets/7129e950-badb-4e08-9ef9-9fe142958e5a" alt="Tracks" width="300" />
     <img src="https://github.com/user-attachments/assets/41bde3be-0a9e-4991-b6e1-a0d20b661e2d" alt="Playing Now" width="300" />
     <img src="https://github.com/user-attachments/assets/195dacb3-a10b-4d27-b81c-b0b7e6a0b40a" alt="Albums" width="300" />
     <img src="https://github.com/user-attachments/assets/78cdf862-2127-4e11-9f88-e0b064c2fe98" alt="Favorites" width="300" />
@@ -26,7 +26,7 @@
 </p>
 
 <h2>Installation</h2>
-<p>To get started with Music Vibe, follow these steps:</p>
+<p>To get started with SonicVibe, follow these steps:</p>
 <ol>
     <li><strong>Clone the Repository</strong>
         <pre><code>git clone https://github.com/ahmedzayan7920/music_vibe.git</code></pre>
@@ -43,7 +43,7 @@
 </ol>
 
 <h2>Contributing</h2>
-<p>Contributions are welcome! To contribute to Music Vibe, follow these steps:</p>
+<p>Contributions are welcome! To contribute to SonicVibe, follow these steps:</p>
 <ol>
     <li><strong>Fork the Repository</strong></li>
     <li><strong>Create a New Branch</strong></li>

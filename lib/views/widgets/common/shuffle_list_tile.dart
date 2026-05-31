@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:on_audio_query_pluse/on_audio_query.dart';
 
 import '../../../core/di/dependency_injection.dart';
-import '../../../core/handlers/song_handler.dart';
+import '../../../core/handlers/track_handler.dart';
 import '../../screens/player_screen.dart';
 
 class ShuffleListTile extends StatelessWidget {
