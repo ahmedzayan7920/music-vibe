@@ -3,7 +3,7 @@ description: "A new Flutter project."
 
 publish_to: "none"
 
-version: 1.1.1+4
+version: 1.1.1+5
 
 environment:
   sdk: ^3.5.0
@@ -27,8 +27,8 @@ dependencies:
 dependency_overrides:
   on_audio_query_ios:
     path: ./local_plugins/on_audio_query_ios
-  # on_audio_query_android:
-  #   path: ./local_plugins/on_audio_query_android
+  on_audio_query_plus_android:
+    path: ./local_plugins/on_audio_query_plus_android
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.3
